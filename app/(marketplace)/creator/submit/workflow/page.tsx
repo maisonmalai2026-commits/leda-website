@@ -6,6 +6,7 @@ import { getMarketplaceFlags } from "@/lib/marketplace/config";
 import { SectionHeading } from "@/components/ui/Card";
 import { ButtonLink } from "@/components/ui/Button";
 import { EmptyState } from "@/components/marketplace/ui/EmptyState";
+import { Reveal } from "@/components/fx/motion";
 
 import { WorkflowWizard } from "./WorkflowWizard";
 
@@ -41,36 +42,53 @@ export default async function SubmitWorkflowPage() {
   if (!user) {
     return (
       <div className="flex flex-col gap-8">
-        <SectionHeading
-          eyebrow="For creators"
-          title="Submit a workflow template"
-          description="Validate a declarative workflow and send it for review."
-        />
-        <EmptyState
-          icon={ShieldCheck}
-          title="Creator access required"
-          description={
-            flags.demoMode
-              ? "Only creators can submit workflow templates. In demo mode, open the account menu in the top bar and switch your demo identity to “Creator” to use this wizard."
-              : "Only creators can submit workflow templates. Sign in as a creator to continue."
-          }
-          action={
-            <ButtonLink href="/creator/dashboard" variant="secondary">
-              Go to creator dashboard
-            </ButtonLink>
-          }
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow="For creators"
+            title="Submit a workflow template"
+            description="Validate a declarative workflow and send it for review."
+          />
+        </Reveal>
+        <Reveal delay={0.1}>
+          <div className="grain relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.015]">
+            <div
+              aria-hidden
+              className="absolute -right-20 -top-20 h-72 w-72 rounded-full opacity-40 blur-3xl"
+              style={{
+                background:
+                  "radial-gradient(circle,rgba(56,189,248,0.4),transparent 70%)",
+              }}
+            />
+            <EmptyState
+              className="border-transparent bg-transparent"
+              icon={ShieldCheck}
+              title="Creator access required"
+              description={
+                flags.demoMode
+                  ? "Only creators can submit workflow templates. In demo mode, open the account menu in the top bar and switch your demo identity to “Creator” to use this wizard."
+                  : "Only creators can submit workflow templates. Sign in as a creator to continue."
+              }
+              action={
+                <ButtonLink href="/creator/dashboard" variant="secondary">
+                  Go to creator dashboard
+                </ButtonLink>
+              }
+            />
+          </div>
+        </Reveal>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col gap-8">
-      <SectionHeading
-        eyebrow="For creators"
-        title="Submit a workflow template"
-        description="Build a declarative workflow, validate it against every safety rule, and submit it for human review. Nothing runs on your machine — the graph is only checked for structure."
-      />
+      <Reveal>
+        <SectionHeading
+          eyebrow="For creators"
+          title="Submit a workflow template"
+          description="Build a declarative workflow, validate it against every safety rule, and submit it for human review. Nothing runs on your machine — the graph is only checked for structure."
+        />
+      </Reveal>
       <WorkflowWizard />
     </div>
   );

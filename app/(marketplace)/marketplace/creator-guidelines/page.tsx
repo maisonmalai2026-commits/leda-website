@@ -12,6 +12,9 @@ import {
 import { Card } from "@/components/ui/Card";
 import { ButtonLink } from "@/components/ui/Button";
 import { COMMUNITY_RULES } from "@/lib/marketplace/policies";
+import { Reveal, Stagger, StaggerItem } from "@/components/fx/motion";
+import { SpotlightCard } from "@/components/fx/SpotlightCard";
+import { Magnetic } from "@/components/fx/Magnetic";
 
 export const metadata: Metadata = {
   title: "Creator guidelines — Leda Marketplace",
@@ -66,23 +69,36 @@ const REVIEW_STEPS: { title: string; body: string }[] = [
 
 function PolicyHeader() {
   return (
-    <div>
-      <Link
-        href="/marketplace/policies"
-        className="inline-flex items-center gap-1 text-sm text-ink-muted underline-offset-4 hover:text-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70 rounded-sm"
-      >
-        <ChevronLeft className="h-4 w-4" aria-hidden />
-        Marketplace policies
-      </Link>
-      <h1 className="mt-4 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-        Creator guidelines
-      </h1>
-      <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-        Leda Marketplace rewards creators who publish workflows and tools that
-        are safe, honest, and genuinely useful. These guidelines explain what we
-        accept and how review works, so your submissions sail through.
-      </p>
-    </div>
+    <Reveal>
+      <div className="relative overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute -left-16 -top-24 h-60 w-[36rem] rounded-full opacity-30 blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(56,189,248,0.26), rgba(139,92,246,0.16) 55%, transparent 72%)",
+          }}
+        />
+        <div className="relative max-w-2xl">
+          <Link
+            href="/marketplace/policies"
+            className="inline-flex items-center gap-1 text-sm text-ink-muted underline-offset-4 hover:text-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70 rounded-sm"
+          >
+            <ChevronLeft className="h-4 w-4" aria-hidden />
+            Marketplace policies
+          </Link>
+          <h1 className="mt-5 text-balance font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl">
+            Creator <span className="text-gradient">guidelines</span>
+          </h1>
+          <p className="mt-4 text-pretty text-[15px] leading-relaxed text-ink-muted sm:text-base">
+            Leda Marketplace rewards creators who publish workflows and tools
+            that are safe, honest, and genuinely useful. These guidelines
+            explain what we accept and how review works, so your submissions
+            sail through.
+          </p>
+        </div>
+      </div>
+    </Reveal>
   );
 }
 
@@ -93,82 +109,104 @@ export default function CreatorGuidelinesPage() {
 
       {/* Do / Don't */}
       <section className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <Card className="flex flex-col gap-4 border-emerald-400/15 bg-emerald-400/[0.03]">
-          <h2 className="flex items-center gap-2 text-base font-semibold text-ink">
-            <CheckCircle2 className="h-5 w-5 text-emerald-300" aria-hidden />
-            Do
-          </h2>
-          <ul className="space-y-3">
-            {DO_ITEMS.map((item) => (
-              <li
-                key={item}
-                className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-muted"
+        <Reveal>
+          <Card className="flex h-full flex-col gap-5 border-emerald-400/20 bg-emerald-400/[0.035]">
+            <h2 className="flex items-center gap-3 font-display text-base font-semibold text-ink">
+              <span
+                className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-400/10 text-emerald-300"
+                aria-hidden
               >
-                <CheckCircle2
-                  className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300/80"
-                  aria-hidden
-                />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
+                <CheckCircle2 className="h-5 w-5" />
+              </span>
+              Do
+            </h2>
+            <ul className="space-y-3.5">
+              {DO_ITEMS.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-muted"
+                >
+                  <CheckCircle2
+                    className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300/80"
+                    aria-hidden
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </Reveal>
 
-        <Card className="flex flex-col gap-4 border-rose-400/15 bg-rose-400/[0.03]">
-          <h2 className="flex items-center gap-2 text-base font-semibold text-ink">
-            <XCircle className="h-5 w-5 text-rose-300" aria-hidden />
-            Don't
-          </h2>
-          <ul className="space-y-3">
-            {DONT_ITEMS.map((item) => (
-              <li
-                key={item}
-                className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-muted"
+        <Reveal delay={0.08}>
+          <Card className="flex h-full flex-col gap-5 border-rose-400/20 bg-rose-400/[0.035]">
+            <h2 className="flex items-center gap-3 font-display text-base font-semibold text-ink">
+              <span
+                className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-rose-400/25 bg-rose-400/10 text-rose-300"
+                aria-hidden
               >
-                <XCircle
-                  className="mt-0.5 h-4 w-4 shrink-0 text-rose-300/80"
-                  aria-hidden
-                />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
+                <XCircle className="h-5 w-5" />
+              </span>
+              Don't
+            </h2>
+            <ul className="space-y-3.5">
+              {DONT_ITEMS.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-muted"
+                >
+                  <XCircle
+                    className="mt-0.5 h-4 w-4 shrink-0 text-rose-300/80"
+                    aria-hidden
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </Reveal>
       </section>
 
       {/* Review process */}
       <section aria-labelledby="review-heading">
-        <div className="mb-5 max-w-2xl">
-          <p className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent-teal">
-            <ClipboardCheck className="h-4 w-4" aria-hidden />
-            How review works
-          </p>
-          <h2
-            id="review-heading"
-            className="text-2xl font-semibold tracking-tight text-ink"
-          >
-            Every submission is reviewed by a human
-          </h2>
-          <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
-            There is no automatic approval. Validation runs first to catch
-            structural issues, then a person reviews for safety and accuracy.
-          </p>
-        </div>
+        <Reveal>
+          <div className="mb-6 max-w-2xl">
+            <p className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent-teal">
+              <ClipboardCheck className="h-4 w-4" aria-hidden />
+              How review works
+            </p>
+            <h2
+              id="review-heading"
+              className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl"
+            >
+              Every submission is reviewed by a human
+            </h2>
+            <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">
+              There is no automatic approval. Validation runs first to catch
+              structural issues, then a person reviews for safety and accuracy.
+            </p>
+          </div>
+        </Reveal>
         <ol className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {REVIEW_STEPS.map((step, i) => (
             <li key={step.title}>
-              <Card className="flex h-full flex-col gap-2">
-                <span
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/[0.10] bg-white/[0.04] text-sm font-semibold text-accent-sky"
-                  aria-hidden
-                >
-                  {i + 1}
-                </span>
-                <h3 className="text-sm font-semibold text-ink">{step.title}</h3>
-                <p className="text-[13px] leading-relaxed text-ink-muted">
-                  {step.body}
-                </p>
-              </Card>
+              <Reveal delay={i * 0.08} className="h-full">
+                <SpotlightCard className="h-full rounded-2xl">
+                  <Card interactive className="flex h-full flex-col gap-3">
+                    <span
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.10] bg-gradient-to-br from-accent-cyan/15 to-accent-violet/15 font-mono text-sm font-semibold text-accent-cyan"
+                      aria-hidden
+                    >
+                      {i + 1}
+                    </span>
+                    <h3 className="font-display text-sm font-semibold text-ink">
+                      {step.title}
+                    </h3>
+                    <p className="text-[13px] leading-relaxed text-ink-muted">
+                      {step.body}
+                    </p>
+                  </Card>
+                </SpotlightCard>
+              </Reveal>
             </li>
           ))}
         </ol>
@@ -176,10 +214,11 @@ export default function CreatorGuidelinesPage() {
 
       {/* Community rules reminder */}
       <section aria-labelledby="rules-reminder-heading">
+        <Reveal>
         <Card className="flex flex-col gap-4">
           <div className="flex items-start gap-3">
             <span
-              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-accent-teal"
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-gradient-to-br from-accent-teal/15 to-accent-cyan/15 text-accent-teal"
               aria-hidden
             >
               <ShieldCheck className="h-5 w-5" />
@@ -187,7 +226,7 @@ export default function CreatorGuidelinesPage() {
             <div>
               <h2
                 id="rules-reminder-heading"
-                className="text-base font-semibold text-ink"
+                className="font-display text-base font-semibold text-ink"
               >
                 The community rules apply to everything you publish
               </h2>
@@ -228,29 +267,44 @@ export default function CreatorGuidelinesPage() {
             .
           </p>
         </Card>
+        </Reveal>
       </section>
 
       {/* CTA */}
       <section>
-        <Card className="flex flex-col items-start justify-between gap-5 bg-gradient-to-br from-accent-blue/[0.10] to-transparent sm:flex-row sm:items-center">
-          <div className="max-w-xl">
-            <h2 className="text-lg font-semibold text-ink">
-              Ready to publish?
-            </h2>
-            <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
-              Start a draft in the creator dashboard. We'll validate it and walk
-              you through review.
-            </p>
+        <Reveal>
+          <div className="gradient-border rounded-3xl">
+            <div className="grain relative flex flex-col items-start justify-between gap-5 overflow-hidden rounded-3xl bg-[#0A0D17]/80 p-6 sm:flex-row sm:items-center sm:p-8">
+              <div
+                aria-hidden
+                className="absolute inset-0 -z-10 opacity-70"
+                style={{
+                  background:
+                    "radial-gradient(55% 80% at 15% 0%, rgba(56,189,248,0.18), transparent 60%), radial-gradient(50% 70% at 90% 100%, rgba(139,92,246,0.16), transparent 60%)",
+                }}
+              />
+              <div className="max-w-xl">
+                <h2 className="font-display text-lg font-semibold text-ink sm:text-xl">
+                  Ready to publish?
+                </h2>
+                <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+                  Start a draft in the creator dashboard. We'll validate it and
+                  walk you through review.
+                </p>
+              </div>
+              <Magnetic>
+                <ButtonLink
+                  href="/creator/dashboard"
+                  variant="primary"
+                  className="shrink-0"
+                >
+                  <Sparkles className="h-4 w-4" aria-hidden />
+                  Open creator dashboard
+                </ButtonLink>
+              </Magnetic>
+            </div>
           </div>
-          <ButtonLink
-            href="/creator/dashboard"
-            variant="primary"
-            className="shrink-0"
-          >
-            <Sparkles className="h-4 w-4" aria-hidden />
-            Open creator dashboard
-          </ButtonLink>
-        </Card>
+        </Reveal>
       </section>
     </div>
   );

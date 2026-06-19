@@ -31,6 +31,7 @@ import { EmptyState } from "@/components/marketplace/ui/EmptyState";
 import { Card } from "@/components/ui/Card";
 import { RiskBadge, Pill } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
+import { Reveal, Stagger, StaggerItem } from "@/components/fx/motion";
 import { cn } from "@/lib/cn";
 
 import { ModerationActions } from "./ModerationActions";
@@ -240,8 +241,15 @@ function QueueCard({ entry }: { entry: QueueItem }) {
   const targetId = item.slug;
 
   return (
-    <Card className="space-y-5">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <Card className="relative space-y-5 overflow-hidden">
+      <div
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full blur-3xl",
+          isWorkflow ? "bg-accent-blue/[0.07]" : "bg-accent-teal/[0.07]",
+        )}
+      />
+      <div className="relative flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="mb-1.5 flex flex-wrap items-center gap-2">
             <span
@@ -262,7 +270,9 @@ function QueueCard({ entry }: { entry: QueueItem }) {
             <ReasonTag reason={entry.reason} />
             {item.is_demo ? <DemoBadge /> : null}
           </div>
-          <h3 className="text-lg font-semibold text-ink">{title}</h3>
+          <h3 className="font-display text-lg font-semibold text-ink">
+            {title}
+          </h3>
           <p className="text-[13px] text-ink-muted">
             by{" "}
             <Link
@@ -296,7 +306,7 @@ function QueueCard({ entry }: { entry: QueueItem }) {
       ) : null}
 
       {/* Preview */}
-      <div>
+      <div className="relative">
         <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-muted">
           Preview
         </p>
@@ -417,22 +427,33 @@ export default async function ModerationPage() {
   // Accessible gate — never redirect, never crash.
   if (!mod) {
     return (
-      <div className="mx-auto max-w-xl">
-        <EmptyState
-          icon={UserCog}
-          title="Moderators only"
-          description={
-            flags.demoMode
-              ? "This is the human review queue. Switch your Demo identity to “Moderator” (or Admin) using the account menu above to explore it."
-              : "You need a moderator role to view the review queue. Ask an admin for access."
-          }
-          action={
-            <ButtonLink href="/marketplace" variant="secondary">
-              Back to marketplace
-            </ButtonLink>
-          }
-        />
-      </div>
+      <Reveal className="mx-auto max-w-xl">
+        <div className="grain relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.015]">
+          <div
+            aria-hidden
+            className="absolute -right-20 -top-20 h-72 w-72 rounded-full opacity-40 blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle,rgba(56,189,248,0.4),transparent 70%)",
+            }}
+          />
+          <EmptyState
+            className="border-transparent bg-transparent"
+            icon={UserCog}
+            title="Moderators only"
+            description={
+              flags.demoMode
+                ? "This is the human review queue. Switch your Demo identity to “Moderator” (or Admin) using the account menu above to explore it."
+                : "You need a moderator role to view the review queue. Ask an admin for access."
+            }
+            action={
+              <ButtonLink href="/marketplace" variant="secondary">
+                Back to marketplace
+              </ButtonLink>
+            }
+          />
+        </div>
+      </Reveal>
     );
   }
 
@@ -442,13 +463,13 @@ export default async function ModerationPage() {
 
   return (
     <div className="space-y-8">
-      <header className="space-y-4">
+      <Reveal as="header" className="space-y-4">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-accent-sky/30 bg-accent-sky/10 text-accent-sky">
+          <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-accent-sky/30 bg-gradient-to-br from-accent-sky/20 to-accent-violet/15 text-accent-sky shadow-glow-blue">
             <ShieldCheck className="h-5 w-5" aria-hidden />
           </span>
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+            <h1 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
               Moderation queue
             </h1>
             <p className="text-sm text-ink-muted">
@@ -461,11 +482,18 @@ export default async function ModerationPage() {
 
         <div
           role="note"
-          className="flex items-start gap-2.5 rounded-xl border border-accent-sky/20 bg-accent-sky/[0.06] px-4 py-3 text-[13px] leading-relaxed text-ink-muted"
+          className="relative flex items-start gap-2.5 overflow-hidden rounded-2xl border border-accent-sky/25 bg-accent-sky/[0.06] px-4 py-3.5 text-[13px] leading-relaxed text-ink-muted shadow-glow-blue"
         >
-          <Info className="mt-0.5 h-4 w-4 shrink-0 text-accent-sky" aria-hidden />
-          <p>
-            <span className="font-medium text-ink">No AI auto-approval.</span>{" "}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-accent-sky/15 blur-3xl"
+          />
+          <Info
+            className="relative mt-0.5 h-4 w-4 shrink-0 text-accent-sky"
+            aria-hidden
+          />
+          <p className="relative">
+            <span className="font-semibold text-ink">No AI auto-approval.</span>{" "}
             Every publish/reject decision requires an explicit human moderator
             action. AI may assist with summaries only.
             {flags.demoMode
@@ -491,7 +519,7 @@ export default async function ModerationPage() {
             Admin dashboard
           </Link>
         </div>
-      </header>
+      </Reveal>
 
       {queue.length === 0 ? (
         <EmptyState
@@ -500,11 +528,13 @@ export default async function ModerationPage() {
           description="There is no pending or reported content to review right now."
         />
       ) : (
-        <div className="space-y-6">
+        <Stagger className="space-y-6">
           {queue.map((entry) => (
-            <QueueCard key={`${entry.kind}-${entry.item.id}`} entry={entry} />
+            <StaggerItem key={`${entry.kind}-${entry.item.id}`}>
+              <QueueCard entry={entry} />
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       )}
     </div>
   );

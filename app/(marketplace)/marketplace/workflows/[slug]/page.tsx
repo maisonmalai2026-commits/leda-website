@@ -30,6 +30,7 @@ import {
 
 import { Card } from "@/components/ui/Card";
 import { RiskBadge } from "@/components/ui/Badge";
+import { Reveal, Stagger, StaggerItem } from "@/components/fx/motion";
 import {
   DemoBadge,
   ModerationBadge,
@@ -183,62 +184,83 @@ export default async function WorkflowDetailPage({
       </nav>
 
       {/* Header */}
-      <header className="flex flex-col gap-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <RiskBadge risk={workflow.risk_level} />
-          <PricingBadge
-            model={workflow.pricing_model}
-            paymentsEnabled={flags.paymentsEnabled}
-          />
-          <ModerationBadge status={workflow.moderation_status} />
-          {workflow.is_demo ? <DemoBadge /> : null}
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h1 className="text-balance text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-            {workflow.title}
-          </h1>
-          <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-ink-muted">
-            {workflow.short_description}
-          </p>
-        </div>
-
-        {/* Rating + quick meta */}
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-ink-faint">
-          {workflow.rating_count > 0 ? (
-            <StarRating
-              value={workflow.rating_avg}
-              count={workflow.rating_count}
-              size={15}
+      <Reveal
+        as="header"
+        className="grain relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.015] p-6 sm:p-9"
+      >
+        <div
+          aria-hidden
+          className="absolute -right-24 -top-24 h-72 w-72 rounded-full opacity-40 blur-3xl"
+          style={{
+            background: isHighRisk
+              ? "radial-gradient(circle,rgba(244,63,94,0.35),transparent 70%)"
+              : "radial-gradient(circle,rgba(56,189,248,0.4),transparent 70%)",
+          }}
+        />
+        <div className="relative flex flex-col gap-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <RiskBadge risk={workflow.risk_level} />
+            <PricingBadge
+              model={workflow.pricing_model}
+              paymentsEnabled={flags.paymentsEnabled}
             />
-          ) : (
-            <span>No ratings yet</span>
-          )}
-          <span className="inline-flex items-center gap-1.5">
-            <GitBranch className="h-3.5 w-3.5" aria-hidden />
-            <span className="tabular-nums">v{workflow.version}</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Zap className="h-3.5 w-3.5" aria-hidden />
-            {trigger.label} trigger
-          </span>
-          <span className="tabular-nums">
-            {workflow.copied_count.toLocaleString()} copies
-          </span>
+            <ModerationBadge status={workflow.moderation_status} />
+            {workflow.is_demo ? <DemoBadge /> : null}
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <h1 className="text-balance font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl lg:text-5xl">
+              {workflow.title}
+            </h1>
+            <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-ink-muted">
+              {workflow.short_description}
+            </p>
+          </div>
+
+          {/* Rating + quick meta */}
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-ink-faint">
+            {workflow.rating_count > 0 ? (
+              <StarRating
+                value={workflow.rating_avg}
+                count={workflow.rating_count}
+                size={15}
+              />
+            ) : (
+              <span>No ratings yet</span>
+            )}
+            <span className="inline-flex items-center gap-1.5">
+              <GitBranch className="h-3.5 w-3.5" aria-hidden />
+              <span className="tabular-nums">v{workflow.version}</span>
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Zap className="h-3.5 w-3.5 text-accent-sky" aria-hidden />
+              {trigger.label} trigger
+            </span>
+            <span className="tabular-nums">
+              {workflow.copied_count.toLocaleString()} copies
+            </span>
+          </div>
         </div>
-      </header>
+      </Reveal>
 
       {/* High-risk banner */}
       {isHighRisk ? (
         <div
           role="note"
-          className="flex items-start gap-3 rounded-2xl border border-rose-400/30 bg-rose-400/[0.08] p-4 text-sm leading-relaxed text-rose-100"
+          className="relative flex items-start gap-3 overflow-hidden rounded-2xl border border-rose-400/30 bg-rose-400/[0.08] p-4 text-sm leading-relaxed text-rose-100 shadow-[0_24px_70px_-40px_rgba(244,63,94,0.6)]"
         >
+          <div
+            aria-hidden
+            className="absolute -left-16 -top-16 h-48 w-48 rounded-full opacity-50 blur-3xl"
+            style={{
+              background: "radial-gradient(circle,rgba(244,63,94,0.4),transparent 70%)",
+            }}
+          />
           <AlertTriangle
-            className="mt-0.5 h-5 w-5 shrink-0 text-rose-300"
+            className="relative mt-0.5 h-5 w-5 shrink-0 text-rose-300"
             aria-hidden
           />
-          <div>
+          <div className="relative">
             <p className="font-semibold text-rose-200">High-risk workflow</p>
             <p className="mt-1 text-rose-100/90">
               This workflow can take sensitive actions (for example sending
@@ -253,7 +275,7 @@ export default async function WorkflowDetailPage({
       {/* Action cluster */}
       <section
         aria-label="Workflow actions"
-        className="flex flex-col gap-3 rounded-2xl border border-white/[0.08] bg-surface/60 p-4 shadow-card sm:p-5"
+        className="relative flex flex-col gap-3 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02] p-4 shadow-card backdrop-blur-[2px] before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/15 before:to-transparent sm:p-5"
       >
         <div className="flex flex-wrap items-center gap-3">
           <CopyWorkflowButton slug={workflow.slug} />
@@ -275,18 +297,34 @@ export default async function WorkflowDetailPage({
         {/* Left / main column */}
         <div className="flex min-w-0 flex-col gap-6">
           {/* Graph preview */}
-          <section aria-labelledby="wf-graph-heading" className="flex flex-col gap-3">
+          <Reveal
+            as="section"
+            aria-labelledby="wf-graph-heading"
+            className="flex flex-col gap-3"
+          >
             <h2
               id="wf-graph-heading"
-              className="text-lg font-semibold text-ink"
+              className="font-display text-lg font-semibold text-ink"
             >
               How it works
             </h2>
             <p className="text-sm leading-relaxed text-ink-muted">
               {trigger.detail}
             </p>
-            <WorkflowGraphView graph={graph} />
-          </section>
+            <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0B0E18]/70 p-3 shadow-glow-blue backdrop-blur-[2px] before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/15 before:to-transparent">
+              <div
+                aria-hidden
+                className="absolute -right-20 -top-20 h-56 w-56 rounded-full opacity-30 blur-3xl"
+                style={{
+                  background:
+                    "radial-gradient(circle,rgba(56,189,248,0.4),transparent 70%)",
+                }}
+              />
+              <div className="relative">
+                <WorkflowGraphView graph={graph} />
+              </div>
+            </div>
+          </Reveal>
 
           {/* Long description */}
           {workflow.long_description ? (
@@ -296,7 +334,7 @@ export default async function WorkflowDetailPage({
             >
               <h2
                 id="wf-about-heading"
-                className="text-lg font-semibold text-ink"
+                className="font-display text-lg font-semibold text-ink"
               >
                 About this workflow
               </h2>
@@ -310,7 +348,7 @@ export default async function WorkflowDetailPage({
           <section aria-labelledby="wf-steps-heading" className="flex flex-col gap-3">
             <h2
               id="wf-steps-heading"
-              className="flex items-center gap-2 text-lg font-semibold text-ink"
+              className="flex items-center gap-2 font-display text-lg font-semibold text-ink"
             >
               <ListChecks className="h-5 w-5 text-accent-sky" aria-hidden />
               Steps ({nodes.length})
@@ -319,10 +357,10 @@ export default async function WorkflowDetailPage({
               {nodes.map((node, index) => (
                 <li
                   key={node.id}
-                  className="flex items-start gap-3 rounded-xl border border-white/[0.07] bg-surface p-3"
+                  className="group flex items-start gap-3 rounded-xl border border-white/[0.07] bg-white/[0.02] p-3 transition-colors hover:border-white/15"
                 >
                   <span
-                    className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-white/[0.10] bg-white/[0.04] text-[12px] font-semibold tabular-nums text-ink-muted"
+                    className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-white/[0.10] bg-gradient-to-br from-accent-cyan/15 to-accent-violet/15 text-[12px] font-semibold tabular-nums text-accent-cyan"
                     aria-hidden
                   >
                     {index + 1}
@@ -345,12 +383,12 @@ export default async function WorkflowDetailPage({
           >
             <h2
               id="wf-capabilities-heading"
-              className="text-lg font-semibold text-ink"
+              className="font-display text-lg font-semibold text-ink"
             >
               What it can &amp; cannot do
             </h2>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <Card className="flex flex-col gap-3 p-4">
+              <Card className="flex flex-col gap-3 border-emerald-400/15 bg-gradient-to-b from-emerald-400/[0.06] to-transparent p-4">
                 <h3 className="flex items-center gap-2 text-sm font-semibold text-emerald-300">
                   <CheckCircle2 className="h-4 w-4" aria-hidden />
                   Can do
@@ -378,7 +416,7 @@ export default async function WorkflowDetailPage({
                 )}
               </Card>
 
-              <Card className="flex flex-col gap-3 p-4">
+              <Card className="flex flex-col gap-3 border-rose-400/15 bg-gradient-to-b from-rose-400/[0.05] to-transparent p-4">
                 <h3 className="flex items-center gap-2 text-sm font-semibold text-rose-300">
                   <XCircle className="h-4 w-4" aria-hidden />
                   Cannot do
@@ -405,7 +443,7 @@ export default async function WorkflowDetailPage({
           <section aria-labelledby="wf-reviews-heading" className="flex flex-col gap-4">
             <h2
               id="wf-reviews-heading"
-              className="text-lg font-semibold text-ink"
+              className="font-display text-lg font-semibold text-ink"
             >
               Reviews{" "}
               <span className="text-ink-faint">
@@ -421,42 +459,44 @@ export default async function WorkflowDetailPage({
         <aside className="flex flex-col gap-5 lg:sticky lg:top-36 lg:self-start">
           {/* Creator card */}
           {owner ? (
-            <Card className="flex flex-col gap-3 p-4">
-              <span className={cardLabelClass}>Creator</span>
-              <Link
-                href={`/u/${owner.handle}`}
-                className="group flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70"
-              >
-                <span
-                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/[0.10] bg-gradient-to-br from-accent-blue/25 to-accent-teal/20 text-sm font-semibold text-ink"
-                  aria-hidden
+            <div className="gradient-border rounded-2xl">
+              <Card className="flex flex-col gap-3 border-transparent bg-gradient-to-b from-accent-blue/[0.06] to-transparent p-4">
+                <span className={cardLabelClass}>Creator</span>
+                <Link
+                  href={`/u/${owner.handle}`}
+                  className="group flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70"
                 >
-                  {(owner.display_name || owner.handle)
-                    .slice(0, 2)
-                    .toUpperCase()}
-                </span>
-                <span className="min-w-0">
-                  <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-                    <span className="truncate group-hover:underline">
-                      {owner.display_name}
+                  <span
+                    className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/[0.10] bg-gradient-to-br from-accent-blue/25 to-accent-teal/20 text-sm font-semibold text-ink"
+                    aria-hidden
+                  >
+                    {(owner.display_name || owner.handle)
+                      .slice(0, 2)
+                      .toUpperCase()}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                      <span className="truncate group-hover:underline">
+                        {owner.display_name}
+                      </span>
+                      {owner.is_verified_creator ? (
+                        <BadgeCheck
+                          className="h-4 w-4 shrink-0 text-accent-sky"
+                          aria-label="Verified creator"
+                        />
+                      ) : null}
                     </span>
-                    {owner.is_verified_creator ? (
-                      <BadgeCheck
-                        className="h-4 w-4 shrink-0 text-accent-sky"
-                        aria-label="Verified creator"
-                      />
-                    ) : null}
+                    <span className="block truncate text-[13px] text-ink-muted">
+                      @{owner.handle}
+                    </span>
                   </span>
-                  <span className="block truncate text-[13px] text-ink-muted">
-                    @{owner.handle}
-                  </span>
-                </span>
-                <ArrowUpRight
-                  className="ml-auto h-4 w-4 shrink-0 text-ink-faint transition-transform group-hover:translate-x-0.5"
-                  aria-hidden
-                />
-              </Link>
-            </Card>
+                  <ArrowUpRight
+                    className="ml-auto h-4 w-4 shrink-0 text-ink-faint transition-transform group-hover:translate-x-0.5"
+                    aria-hidden
+                  />
+                </Link>
+              </Card>
+            </div>
           ) : null}
 
           {/* Trigger summary */}

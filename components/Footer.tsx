@@ -5,17 +5,25 @@ import { footerNav, site, socialLinks, config } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="mt-24 border-t border-white/[0.06]">
-      <Container className="py-12">
+    <footer className="relative mt-28 overflow-hidden border-t border-white/[0.07]">
+      <div
+        aria-hidden
+        className="absolute -bottom-40 left-1/2 h-80 w-[60rem] -translate-x-1/2 rounded-full opacity-30 blur-3xl"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(56,189,248,0.3), rgba(139,92,246,0.2) 55%, transparent 70%)",
+        }}
+      />
+      <Container className="relative py-14">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
             <div className="flex items-center gap-2.5">
               <LogoMark />
-              <span className="text-lg font-semibold tracking-tight text-ink">
+              <span className="font-display text-lg font-semibold tracking-tight text-ink">
                 Leda
               </span>
             </div>
-            <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+            <p className="mt-4 text-sm leading-relaxed text-ink-muted">
               {site.tagline} A desktop-first AI workspace built for thoughtful
               automation.
             </p>
@@ -32,7 +40,7 @@ export function Footer() {
 
             <FooterColumn title="Company">
               <FooterLink href="/about">Vision</FooterLink>
-              <FooterLink href="/download">Download</FooterLink>
+              <FooterLink href="/download">Preorder</FooterLink>
               <FooterLink href="/contact">Join waitlist</FooterLink>
             </FooterColumn>
 
@@ -52,19 +60,19 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-white/[0.06] pt-6 text-sm text-ink-faint sm:flex-row sm:items-center">
+        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-white/[0.06] pt-6 text-sm text-ink-faint sm:flex-row sm:items-center">
           <p>
             © {new Date().getFullYear()} Leda. Built for thoughtful automation.
           </p>
           <div className="flex items-center gap-4">
-            <Link href="/privacy" className="hover:text-ink-muted">
+            <Link href="/privacy" className="transition-colors hover:text-ink-muted">
               Privacy &amp; Safety
             </Link>
             <a
               href={config.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-ink-muted"
+              className="transition-colors hover:text-ink-muted"
             >
               GitHub
             </a>

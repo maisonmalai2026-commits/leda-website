@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { ArrowUpRight, Heart, GitBranch, ShieldQuestion } from "lucide-react";
+import {
+  ArrowUpRight,
+  Heart,
+  GitBranch,
+  ShieldQuestion,
+  Puzzle,
+} from "lucide-react";
 
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/cn";
@@ -70,7 +76,14 @@ export function PluginCard({
       </div>
 
       {/* Title + category + owner */}
-      <div className="min-w-0">
+      <div className="flex items-start gap-3">
+        <span
+          className="mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-gradient-to-br from-accent-blue/15 to-accent-cyan/15 text-accent-sky transition-colors group-hover:border-accent-sky/30"
+          aria-hidden
+        >
+          <Puzzle className="h-[18px] w-[18px]" />
+        </span>
+        <div className="min-w-0">
         <h3 className="text-base font-semibold leading-snug text-ink">
           <Link
             href={href}
@@ -99,6 +112,7 @@ export function PluginCard({
             </>
           ) : null}
         </p>
+        </div>
       </div>
 
       <p className="line-clamp-2 text-sm leading-relaxed text-ink-muted">

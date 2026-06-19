@@ -50,7 +50,7 @@ export function ReviewList({ reviews }: { reviews: MarketplaceReview[] }) {
         return (
           <li
             key={review.id}
-            className="rounded-2xl border border-white/[0.08] bg-surface p-4 shadow-card"
+            className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0B0E18]/70 p-4 shadow-card backdrop-blur-[2px] transition-colors hover:border-white/15 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/12 before:to-transparent"
           >
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2.5">

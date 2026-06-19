@@ -135,14 +135,14 @@ export function AccountMenu({
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
         className={cn(
-          "inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.04] px-2.5 py-1.5 text-left text-sm transition-colors",
-          "hover:bg-white/[0.08] hover:border-white/20",
+          "inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.04] px-2.5 py-1.5 text-left text-sm transition-all",
+          "hover:bg-white/[0.08] hover:border-accent-cyan/30 hover:shadow-[0_0_22px_-10px_rgba(56,189,248,0.7)]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70 focus-visible:ring-offset-2 focus-visible:ring-offset-base",
         )}
       >
         <span
           aria-hidden
-          className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent-blue/80 to-accent-teal/80 text-[11px] font-semibold text-base"
+          className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent-blue via-accent-cyan to-accent-teal text-[11px] font-semibold text-base shadow-[0_0_14px_-4px_rgba(34,211,238,0.6)]"
         >
           {sessionUser ? (
             initials(displayName)
@@ -158,7 +158,7 @@ export function AccountMenu({
             {handle ? `@${handle}` : "Not signed in"}
           </span>
         </span>
-        <span className="hidden rounded-md border border-white/10 bg-white/[0.05] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-ink-muted md:inline">
+        <span className="hidden rounded-md border border-accent-cyan/20 bg-accent-cyan/[0.06] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-accent-cyan md:inline">
           {ROLE_LABELS[currentRole]}
         </span>
         <ChevronDown
@@ -175,7 +175,7 @@ export function AccountMenu({
           id={menuId}
           role="menu"
           aria-label="Demo identity"
-          className="absolute right-0 z-50 mt-2 w-64 origin-top-right rounded-2xl border border-white/[0.10] bg-surface-raised p-1.5 shadow-card animate-fade-up"
+          className="absolute right-0 z-50 mt-2 w-64 origin-top-right overflow-hidden rounded-2xl border border-white/[0.10] bg-surface-raised/95 p-1.5 shadow-card backdrop-blur-xl animate-fade-up before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent"
         >
           <div className="flex items-start gap-2 px-2.5 pb-2 pt-2">
             <Info
@@ -213,8 +213,8 @@ export function AccountMenu({
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70",
                     "disabled:cursor-not-allowed disabled:opacity-60",
                     active
-                      ? "bg-white/[0.06] text-ink"
-                      : "text-ink-muted hover:bg-white/[0.05] hover:text-ink",
+                      ? "border border-accent-teal/20 bg-gradient-to-r from-accent-teal/[0.10] to-transparent text-ink"
+                      : "border border-transparent text-ink-muted hover:bg-white/[0.05] hover:text-ink",
                   )}
                 >
                   <span className="flex h-4 w-4 shrink-0 items-center justify-center">

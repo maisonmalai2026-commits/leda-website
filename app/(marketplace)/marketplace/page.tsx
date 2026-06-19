@@ -25,6 +25,9 @@ import { PluginCard } from "@/components/marketplace/PluginCard";
 import { CreatorCard } from "@/components/marketplace/CreatorCard";
 import { HomeSearch } from "@/components/marketplace/HomeSearch";
 import { EmptyState } from "@/components/marketplace/ui/EmptyState";
+import { Reveal, Stagger, StaggerItem } from "@/components/fx/motion";
+import { SpotlightCard } from "@/components/fx/SpotlightCard";
+import { Magnetic } from "@/components/fx/Magnetic";
 
 export const metadata: Metadata = {
   title: "Leda Marketplace — Build once. Share what works.",
@@ -97,18 +100,19 @@ function SectionHead({
   cta?: string;
 }) {
   return (
-    <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+    <Reveal className="mb-7 flex flex-wrap items-end justify-between gap-3">
       <div className="max-w-2xl">
         {eyebrow ? (
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent-teal">
+          <p className="mb-3 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent-cyan">
+            <span className="h-1 w-6 rounded-full bg-gradient-to-r from-accent-cyan to-accent-violet" />
             {eyebrow}
           </p>
         ) : null}
-        <h2 className="text-balance text-2xl font-semibold tracking-tight text-ink sm:text-[1.7rem]">
+        <h2 className="text-balance font-display text-2xl font-semibold tracking-tight text-ink sm:text-[1.75rem]">
           {title}
         </h2>
         {description ? (
-          <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
+          <p className="mt-2.5 text-[15px] leading-relaxed text-ink-muted">
             {description}
           </p>
         ) : null}
@@ -116,13 +120,16 @@ function SectionHead({
       {href && cta ? (
         <Link
           href={href}
-          className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-accent-sky underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70 rounded-sm"
+          className="group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-sm font-medium text-accent-sky transition-colors hover:border-accent-sky/40 hover:bg-accent-sky/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70"
         >
           {cta}
-          <ArrowUpRight className="h-4 w-4" aria-hidden />
+          <ArrowUpRight
+            className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            aria-hidden
+          />
         </Link>
       ) : null}
-    </div>
+    </Reveal>
   );
 }
 
@@ -141,51 +148,66 @@ export default async function MarketplaceHomePage() {
   return (
     <div className="space-y-16 sm:space-y-20">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-transparent px-6 py-12 sm:px-10 sm:py-16">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent-blue/10 blur-3xl"
-        />
-        <div className="relative max-w-3xl">
-          <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-ink-muted">
-            <Sparkles className="h-3.5 w-3.5 text-accent-teal" aria-hidden />
-            Leda Marketplace
-          </p>
-          <h1 className="text-balance text-3xl font-semibold tracking-tight text-ink sm:text-5xl">
-            Build once. Share what works.
-          </h1>
-          <p className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-ink-muted sm:text-lg">
-            Discover workflows and trusted tools made for Leda.
-          </p>
+      <Reveal as="section" y={28}>
+        <div className="conic-border rounded-3xl">
+          <div className="grain relative overflow-hidden rounded-3xl bg-[#0A0D17]/80 px-6 py-12 sm:px-10 sm:py-16">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -z-10 opacity-80"
+              style={{
+                background:
+                  "radial-gradient(60% 80% at 85% 0%, rgba(56,189,248,0.18), transparent 60%), radial-gradient(50% 70% at 5% 100%, rgba(139,92,246,0.16), transparent 60%)",
+              }}
+            />
+            <div className="relative max-w-3xl">
+              <p className="eyebrow">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent-teal animate-pulse-soft" />
+                Leda Marketplace
+              </p>
+              <h1 className="mt-5 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl">
+                Build once.{" "}
+                <span className="text-gradient">Share what works.</span>
+              </h1>
+              <p className="mt-5 max-w-2xl text-pretty text-base leading-relaxed text-ink-muted sm:text-lg">
+                Discover workflows and trusted tools made for Leda.
+              </p>
 
-          <div className="mt-7 max-w-xl">
-            <HomeSearch />
-          </div>
+              <div className="mt-8 max-w-xl">
+                <HomeSearch />
+              </div>
 
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <ButtonLink href="/marketplace/workflows" variant="primary">
-              <Workflow className="h-4 w-4" aria-hidden />
-              Browse workflows
-            </ButtonLink>
-            <ButtonLink href="/marketplace/plugins" variant="secondary">
-              <Puzzle className="h-4 w-4" aria-hidden />
-              Browse tools
-            </ButtonLink>
+              <div className="mt-5 flex flex-wrap items-center gap-3">
+                <Magnetic>
+                  <ButtonLink href="/marketplace/workflows" variant="primary">
+                    <Workflow className="h-4 w-4" aria-hidden />
+                    Browse workflows
+                  </ButtonLink>
+                </Magnetic>
+                <ButtonLink href="/marketplace/plugins" variant="secondary">
+                  <Puzzle className="h-4 w-4" aria-hidden />
+                  Browse tools
+                </ButtonLink>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+      </Reveal>
 
       {/* Safety message */}
-      <section>
-        <Card className="flex flex-col gap-4 border-accent-teal/20 bg-accent-teal/[0.04] sm:flex-row sm:items-start sm:gap-5">
+      <Reveal as="section">
+        <Card className="relative flex flex-col gap-4 overflow-hidden border-accent-teal/20 bg-accent-teal/[0.04] shadow-glow-teal sm:flex-row sm:items-start sm:gap-5">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-accent-teal/10 blur-3xl"
+          />
           <span
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-accent-teal/25 bg-accent-teal/10 text-accent-teal"
+            className="relative inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-accent-teal/25 bg-gradient-to-br from-accent-teal/20 to-accent-cyan/10 text-accent-teal"
             aria-hidden
           >
             <ShieldCheck className="h-5 w-5" />
           </span>
-          <div className="min-w-0">
-            <h2 className="text-base font-semibold text-ink">
+          <div className="relative min-w-0">
+            <h2 className="font-display text-base font-semibold text-ink">
               Safe by design
             </h2>
             <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
@@ -213,7 +235,7 @@ export default async function MarketplaceHomePage() {
             </p>
           </div>
         </Card>
-      </section>
+      </Reveal>
 
       {/* Featured workflows */}
       <section>
@@ -225,15 +247,15 @@ export default async function MarketplaceHomePage() {
           cta="All workflows"
         />
         {featuredWorkflows.length > 0 ? (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <Stagger className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {featuredWorkflows.map((workflow) => (
-              <WorkflowCard
-                key={workflow.id}
-                workflow={workflow}
-                flags={flags}
-              />
+              <StaggerItem key={workflow.id}>
+                <SpotlightCard className="h-full rounded-2xl">
+                  <WorkflowCard workflow={workflow} flags={flags} />
+                </SpotlightCard>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         ) : (
           <EmptyState
             icon={Workflow}
@@ -258,11 +280,15 @@ export default async function MarketplaceHomePage() {
           cta="All tools"
         />
         {featuredPlugins.length > 0 ? (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <Stagger className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {featuredPlugins.map((plugin) => (
-              <PluginCard key={plugin.id} plugin={plugin} flags={flags} />
+              <StaggerItem key={plugin.id}>
+                <SpotlightCard className="h-full rounded-2xl">
+                  <PluginCard plugin={plugin} flags={flags} />
+                </SpotlightCard>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         ) : (
           <EmptyState
             icon={Puzzle}
@@ -284,22 +310,25 @@ export default async function MarketplaceHomePage() {
           title="Popular categories"
         />
         {categories.length > 0 ? (
-          <div className="flex flex-wrap gap-2.5">
+          <Reveal className="flex flex-wrap gap-2.5">
             {categories.map((category) => (
               <Link
                 key={category.id}
                 href={`/marketplace/categories/${category.slug}`}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full border border-white/[0.10] bg-white/[0.04] px-3.5 py-2 text-sm font-medium text-ink-muted",
-                  "transition-colors hover:border-white/20 hover:bg-white/[0.07] hover:text-ink",
+                  "group inline-flex items-center gap-1.5 rounded-full border border-white/[0.10] bg-white/[0.04] px-3.5 py-2 text-sm font-medium text-ink-muted",
+                  "transition-all hover:-translate-y-0.5 hover:border-accent-cyan/30 hover:bg-accent-cyan/[0.06] hover:text-ink",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70",
                 )}
               >
-                <Tag className="h-3.5 w-3.5 text-ink-faint" aria-hidden />
+                <Tag
+                  className="h-3.5 w-3.5 text-ink-faint transition-colors group-hover:text-accent-cyan"
+                  aria-hidden
+                />
                 {category.name}
               </Link>
             ))}
-          </div>
+          </Reveal>
         ) : (
           <p className="text-sm text-ink-muted">No categories available yet.</p>
         )}
@@ -315,11 +344,15 @@ export default async function MarketplaceHomePage() {
           cta="All creators"
         />
         {topCreators.length > 0 ? (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <Stagger className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {topCreators.map((creator) => (
-              <CreatorCard key={creator.id} creator={creator} />
+              <StaggerItem key={creator.id}>
+                <SpotlightCard className="h-full rounded-2xl">
+                  <CreatorCard creator={creator} />
+                </SpotlightCard>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         ) : (
           <EmptyState
             icon={Users}
@@ -336,12 +369,13 @@ export default async function MarketplaceHomePage() {
           title="Status & trust legend"
           description="Every card carries a status badge so you always know how much review a workflow or tool has had."
         />
+        <Reveal>
         <Card className="p-0">
           <ul className="divide-y divide-white/[0.06]">
             {LEGEND.map((item) => (
               <li
                 key={item.label}
-                className="flex flex-col gap-1 px-5 py-4 sm:flex-row sm:items-center sm:gap-4"
+                className="flex flex-col gap-1 px-5 py-4 transition-colors hover:bg-white/[0.02] sm:flex-row sm:items-center sm:gap-4"
               >
                 <span
                   className={cn(
@@ -362,38 +396,48 @@ export default async function MarketplaceHomePage() {
             ))}
           </ul>
         </Card>
+        </Reveal>
       </section>
 
       {/* Become a creator CTA */}
-      <section>
-        <Card className="relative overflow-hidden border-white/[0.10] bg-gradient-to-br from-accent-blue/[0.12] via-transparent to-accent-teal/[0.08]">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -left-16 -bottom-20 h-64 w-64 rounded-full bg-accent-teal/10 blur-3xl"
-          />
-          <div className="relative flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
-            <div className="max-w-xl">
-              <h2 className="text-xl font-semibold tracking-tight text-ink sm:text-2xl">
-                Made something that works? Share it.
-              </h2>
-              <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
-                Publish workflow templates and tool listings to the Leda
-                community. You keep ownership; every submission is reviewed
-                before it goes live.
-              </p>
+      <Reveal as="section">
+        <div className="gradient-border rounded-3xl">
+          <div className="grain relative overflow-hidden rounded-3xl bg-[#0A0D17]/80 p-8 sm:p-10">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -z-10 opacity-70"
+              style={{
+                background:
+                  "radial-gradient(55% 80% at 0% 100%, rgba(45,212,191,0.18), transparent 60%), radial-gradient(55% 80% at 100% 0%, rgba(59,130,246,0.18), transparent 60%)",
+              }}
+            />
+            <div className="relative flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+              <div className="max-w-xl">
+                <h2 className="font-display text-xl font-semibold tracking-tight text-ink sm:text-2xl">
+                  Made something that works?{" "}
+                  <span className="text-gradient">Share it.</span>
+                </h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
+                  Publish workflow templates and tool listings to the Leda
+                  community. You keep ownership; every submission is reviewed
+                  before it goes live.
+                </p>
+              </div>
+              <Magnetic>
+                <ButtonLink
+                  href="/creator/dashboard"
+                  variant="primary"
+                  size="lg"
+                  className="shrink-0"
+                >
+                  <Sparkles className="h-4 w-4" aria-hidden />
+                  Become a creator
+                </ButtonLink>
+              </Magnetic>
             </div>
-            <ButtonLink
-              href="/creator/dashboard"
-              variant="primary"
-              size="lg"
-              className="shrink-0"
-            >
-              <Sparkles className="h-4 w-4" aria-hidden />
-              Become a creator
-            </ButtonLink>
           </div>
-        </Card>
-      </section>
+        </div>
+      </Reveal>
     </div>
   );
 }

@@ -29,12 +29,18 @@ export function HomeSearch({
   }
 
   return (
-    <SearchBar
-      value={value}
-      onChange={setValue}
-      onSubmit={go}
-      placeholder={placeholder}
-      label="Search the marketplace"
-    />
+    <div className="group relative">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-px -z-10 rounded-xl bg-gradient-to-r from-accent-blue/20 via-accent-cyan/20 to-accent-violet/20 opacity-0 blur-md transition-opacity duration-300 group-focus-within:opacity-100"
+      />
+      <SearchBar
+        value={value}
+        onChange={setValue}
+        onSubmit={go}
+        placeholder={placeholder}
+        label="Search the marketplace"
+      />
+    </div>
   );
 }

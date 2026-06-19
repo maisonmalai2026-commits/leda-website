@@ -14,6 +14,7 @@ import {
 import { PluginCard } from "@/components/marketplace/PluginCard";
 import { EmptyState } from "@/components/marketplace/ui/EmptyState";
 import { SectionHeading } from "@/components/ui/Card";
+import { Reveal, Stagger, StaggerItem } from "@/components/fx/motion";
 
 import { PluginFilters } from "./PluginFilters";
 
@@ -101,31 +102,46 @@ export default async function PluginsGalleryPage({
 
   return (
     <div className="flex flex-col gap-8">
-      <header className="flex flex-col gap-5">
-        <SectionHeading
-          eyebrow="Marketplace"
-          title="Plugins"
-          description="Connectors and tools your workflows can call. Each listing shows its trust tier and is transparent about what it can and cannot access. Community code is never installed automatically."
+      <Reveal
+        as="header"
+        className="grain relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.015] p-6 sm:p-9"
+      >
+        <div
+          aria-hidden
+          className="absolute -right-24 -top-24 h-72 w-72 rounded-full opacity-40 blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle,rgba(139,92,246,0.4),transparent 70%)",
+          }}
         />
-        <p className="inline-flex items-start gap-2 text-[13px] leading-relaxed text-ink-faint">
-          <ShieldCheck
-            className="mt-0.5 h-4 w-4 shrink-0 text-accent-teal"
-            aria-hidden
+        <div className="relative flex flex-col gap-5">
+          <SectionHeading
+            eyebrow="Marketplace"
+            title="Plugins"
+            description="Connectors and tools your workflows can call. Each listing shows its trust tier and is transparent about what it can and cannot access. Community code is never installed automatically."
           />
-          <span>
-            Listings are metadata only. Official and verified plugins have been
-            reviewed; community and experimental listings are not installed by
-            Leda automatically.
-          </span>
-        </p>
-      </header>
+          <p className="inline-flex items-start gap-2 rounded-xl border border-accent-teal/15 bg-accent-teal/[0.05] px-3 py-2.5 text-[13px] leading-relaxed text-ink-muted">
+            <ShieldCheck
+              className="mt-0.5 h-4 w-4 shrink-0 text-accent-teal"
+              aria-hidden
+            />
+            <span>
+              Listings are metadata only. Official and verified plugins have been
+              reviewed; community and experimental listings are not installed by
+              Leda automatically.
+            </span>
+          </p>
+        </div>
+      </Reveal>
 
-      <PluginFilters
-        q={q}
-        category={category}
-        trustStatus={trustStatus}
-        sort={sort ?? "trending"}
-      />
+      <Reveal delay={0.1}>
+        <PluginFilters
+          q={q}
+          category={category}
+          trustStatus={trustStatus}
+          sort={sort ?? "trending"}
+        />
+      </Reveal>
 
       <section aria-label="Plugin results">
         <p className="mb-4 text-[13px] text-ink-faint" role="status">
@@ -145,16 +161,13 @@ export default async function PluginsGalleryPage({
             }
           />
         ) : (
-          <ul
-            className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
-            aria-label="Plugins"
-          >
+          <Stagger className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {plugins.map((plugin) => (
-              <li key={plugin.id} className="flex">
+              <StaggerItem key={plugin.id} className="flex">
                 <PluginCard plugin={plugin} flags={flags} />
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         )}
       </section>
     </div>

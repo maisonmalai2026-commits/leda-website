@@ -20,11 +20,17 @@ export default function MarketplaceError({
   }, [error]);
 
   return (
-    <ErrorState
-      title="This page didn't load"
-      description="Something went wrong while loading the marketplace. You can try again."
-      onRetry={reset}
-      className="my-6"
-    />
+    <div className="relative my-6 overflow-hidden">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 rounded-full bg-rose-500/10 blur-3xl"
+      />
+      <ErrorState
+        title="This page didn't load"
+        description="Something went wrong while loading the marketplace. You can try again."
+        onRetry={reset}
+        className="relative"
+      />
+    </div>
   );
 }

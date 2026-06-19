@@ -37,7 +37,7 @@ export function CreatorCard({ creator }: { creator: Profile }) {
       <div className="flex items-center gap-3.5">
         {/* Avatar */}
         <span
-          className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/[0.10] bg-gradient-to-br from-accent-blue/25 to-accent-teal/20 text-sm font-semibold text-ink"
+          className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/[0.10] bg-gradient-to-br from-accent-blue/25 via-accent-cyan/15 to-accent-violet/20 text-sm font-semibold text-ink transition-all group-hover:border-accent-cyan/30 group-hover:shadow-[0_0_22px_-8px_rgba(34,211,238,0.7)]"
           aria-hidden
         >
           {initials(creator.display_name, creator.handle)}

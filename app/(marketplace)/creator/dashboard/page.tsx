@@ -38,6 +38,8 @@ import {
   ModerationBadge,
   DemoBadge,
 } from "@/components/marketplace/ui/TrustBadge";
+import { Reveal, Stagger, StaggerItem } from "@/components/fx/motion";
+import { SpotlightCard } from "@/components/fx/SpotlightCard";
 
 // ---------------------------------------------------------------------------
 // /creator/dashboard — gated to the "creator" role (or above).
@@ -123,23 +125,29 @@ function StatTile({
   value: number;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-surface p-4 shadow-card">
-      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-accent-sky">
-        <Icon className="h-5 w-5" aria-hidden />
-      </span>
-      <span className="min-w-0">
-        <span className="block text-xl font-semibold tabular-nums text-ink">
-          {value.toLocaleString()}
+    <SpotlightCard className="h-full rounded-2xl">
+      <div className="group relative flex h-full items-center gap-3 overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0B0E18]/70 p-4 shadow-card backdrop-blur-[2px] transition-colors duration-300 hover:border-white/20">
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-accent-cyan/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+        />
+        <span className="relative inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-gradient-to-br from-accent-cyan/15 to-accent-violet/15 text-accent-cyan">
+          <Icon className="h-5 w-5" aria-hidden />
         </span>
-        <span className="block text-[12px] text-ink-muted">{label}</span>
-      </span>
-    </div>
+        <span className="relative min-w-0">
+          <span className="block text-xl font-semibold tabular-nums text-ink">
+            {value.toLocaleString()}
+          </span>
+          <span className="block text-[12px] text-ink-muted">{label}</span>
+        </span>
+      </div>
+    </SpotlightCard>
   );
 }
 
 function WorkflowSubmissionRow({ item }: { item: WorkflowTemplate }) {
   return (
-    <li className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-4">
+    <li className="group rounded-xl border border-white/[0.07] bg-white/[0.02] p-4 transition-colors duration-300 hover:border-white/15 hover:bg-white/[0.035]">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="flex items-center gap-2 text-sm font-semibold text-ink">
@@ -207,7 +215,7 @@ function WorkflowSubmissionRow({ item }: { item: WorkflowTemplate }) {
 
 function PluginSubmissionRow({ item }: { item: PluginListing }) {
   return (
-    <li className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-4">
+    <li className="group rounded-xl border border-white/[0.07] bg-white/[0.02] p-4 transition-colors duration-300 hover:border-white/15 hover:bg-white/[0.035]">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="flex items-center gap-2 text-sm font-semibold text-ink">
@@ -295,28 +303,31 @@ function SubmissionSection<
   const orderedStatuses = STATUS_ORDER.filter((s) => grouped.has(s));
 
   return (
-    <section
-      aria-labelledby={`${title.replace(/\s+/g, "-").toLowerCase()}-heading`}
-      className="flex flex-col gap-4"
-    >
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2
-          id={`${title.replace(/\s+/g, "-").toLowerCase()}-heading`}
-          className="flex items-center gap-2 text-lg font-semibold text-ink"
-        >
-          <Icon className="h-5 w-5 text-accent-teal" aria-hidden />
-          {title}
-          <span className="text-sm font-normal text-ink-faint">
-            ({items.length})
-          </span>
-        </h2>
-        <ButtonLink href={createHref} variant="secondary" size="md">
-          <Plus className="h-4 w-4" aria-hidden />
-          {createLabel}
-        </ButtonLink>
-      </div>
+    <Reveal>
+      <section
+        aria-labelledby={`${title.replace(/\s+/g, "-").toLowerCase()}-heading`}
+        className="flex flex-col gap-4"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2
+            id={`${title.replace(/\s+/g, "-").toLowerCase()}-heading`}
+            className="flex items-center gap-2.5 font-display text-lg font-semibold text-ink"
+          >
+            <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-gradient-to-br from-accent-cyan/15 to-accent-violet/15 text-accent-teal">
+              <Icon className="h-4 w-4" aria-hidden />
+            </span>
+            {title}
+            <span className="text-sm font-normal text-ink-faint">
+              ({items.length})
+            </span>
+          </h2>
+          <ButtonLink href={createHref} variant="secondary" size="md">
+            <Plus className="h-4 w-4" aria-hidden />
+            {createLabel}
+          </ButtonLink>
+        </div>
 
-      {items.length === 0 ? (
+        {items.length === 0 ? (
         <EmptyState
           icon={Icon}
           title={emptyTitle}
@@ -353,7 +364,8 @@ function SubmissionSection<
           })}
         </div>
       )}
-    </section>
+      </section>
+    </Reveal>
   );
 }
 
@@ -367,25 +379,40 @@ export default async function CreatorDashboardPage() {
   if (!user) {
     return (
       <div className="flex flex-col gap-8">
-        <SectionHeading
-          eyebrow="For creators"
-          title="Creator dashboard"
-          description="Publish and manage your workflow templates and plugin listings on the Leda Marketplace."
-        />
-        <EmptyState
-          icon={ShieldCheck}
-          title="Become a creator to publish"
-          description={
-            flags.demoMode
-              ? "This area is for creators. In demo mode, open the account menu in the top bar and switch your demo identity to “Creator” to explore the dashboard and submission flows."
-              : "You need a creator account to publish workflows and plugins. Sign in as a creator to access your dashboard."
-          }
-          action={
-            <ButtonLink href="/marketplace" variant="secondary">
-              Browse the marketplace
-            </ButtonLink>
-          }
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow="For creators"
+            title="Creator dashboard"
+            description="Publish and manage your workflow templates and plugin listings on the Leda Marketplace."
+          />
+        </Reveal>
+        <Reveal delay={0.1}>
+          <div className="grain relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.015]">
+            <div
+              aria-hidden
+              className="absolute -right-20 -top-20 h-72 w-72 rounded-full opacity-40 blur-3xl"
+              style={{
+                background:
+                  "radial-gradient(circle,rgba(139,92,246,0.4),transparent 70%)",
+              }}
+            />
+            <EmptyState
+              className="border-transparent bg-transparent"
+              icon={ShieldCheck}
+              title="Become a creator to publish"
+              description={
+                flags.demoMode
+                  ? "This area is for creators. In demo mode, open the account menu in the top bar and switch your demo identity to “Creator” to explore the dashboard and submission flows."
+                  : "You need a creator account to publish workflows and plugins. Sign in as a creator to access your dashboard."
+              }
+              action={
+                <ButtonLink href="/marketplace" variant="secondary">
+                  Browse the marketplace
+                </ButtonLink>
+              }
+            />
+          </div>
+        </Reveal>
       </div>
     );
   }
@@ -422,15 +449,24 @@ export default async function CreatorDashboardPage() {
   return (
     <div className="flex flex-col gap-10">
       {/* Profile summary */}
-      <header className="flex flex-col gap-6">
-        <Card className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-4">
-            <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/[0.10] bg-white/[0.04] text-lg font-semibold text-ink">
-              {initials}
-            </span>
+      <Reveal as="header" className="flex flex-col gap-6">
+        <div className="gradient-border rounded-3xl">
+          <Card className="grain relative flex flex-col gap-5 overflow-hidden rounded-3xl border-transparent bg-gradient-to-br from-accent-blue/[0.06] via-transparent to-accent-violet/[0.05] sm:flex-row sm:items-center sm:justify-between">
+            <div
+              aria-hidden
+              className="absolute -left-16 -top-20 h-56 w-56 rounded-full opacity-50 blur-3xl"
+              style={{
+                background:
+                  "radial-gradient(circle,rgba(56,189,248,0.28),transparent 70%)",
+              }}
+            />
+            <div className="relative flex items-center gap-4">
+              <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/[0.12] bg-gradient-to-br from-accent-cyan/20 to-accent-violet/20 font-display text-lg font-semibold text-ink shadow-glow-blue">
+                {initials}
+              </span>
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-xl font-semibold text-ink">
+                <h1 className="font-display text-xl font-semibold text-ink">
                   {profile.display_name}
                 </h1>
                 {profile.is_verified_creator ? (
@@ -456,7 +492,7 @@ export default async function CreatorDashboardPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2.5">
+          <div className="relative flex flex-wrap gap-2.5">
             <ButtonLink href="/creator/submit/workflow" variant="primary">
               <WorkflowIcon className="h-4 w-4" aria-hidden />
               Create workflow template
@@ -466,16 +502,25 @@ export default async function CreatorDashboardPage() {
               Submit plugin listing
             </ButtonLink>
           </div>
-        </Card>
+          </Card>
+        </div>
 
         {/* Stat tiles — honest, derived from the creator's own content. */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <StatTile icon={Heart} label="Likes" value={totalLikes} />
-          <StatTile icon={Bookmark} label="Bookmarks" value={totalBookmarks} />
-          <StatTile icon={Copy} label="Copies" value={totalCopies} />
-          <StatTile icon={Star} label="Reviews" value={totalReviews} />
-        </div>
-      </header>
+        <Stagger className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <StaggerItem className="h-full">
+            <StatTile icon={Heart} label="Likes" value={totalLikes} />
+          </StaggerItem>
+          <StaggerItem className="h-full">
+            <StatTile icon={Bookmark} label="Bookmarks" value={totalBookmarks} />
+          </StaggerItem>
+          <StaggerItem className="h-full">
+            <StatTile icon={Copy} label="Copies" value={totalCopies} />
+          </StaggerItem>
+          <StaggerItem className="h-full">
+            <StatTile icon={Star} label="Reviews" value={totalReviews} />
+          </StaggerItem>
+        </Stagger>
+      </Reveal>
 
       {/* Workflow submissions */}
       <SubmissionSection
@@ -502,14 +547,18 @@ export default async function CreatorDashboardPage() {
       />
 
       {/* Placeholder cards: verification + earnings */}
-      <section
-        aria-labelledby="creator-extras-heading"
-        className="flex flex-col gap-4"
-      >
+      <Reveal>
+        <section
+          aria-labelledby="creator-extras-heading"
+          className="flex flex-col gap-4"
+        >
         <h2
           id="creator-extras-heading"
-          className="text-lg font-semibold text-ink"
+          className="flex items-center gap-2.5 font-display text-lg font-semibold text-ink"
         >
+          <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-gradient-to-br from-accent-cyan/15 to-accent-violet/15 text-accent-cyan">
+            <UserPlus className="h-4 w-4" aria-hidden />
+          </span>
           Account
         </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -571,7 +620,8 @@ export default async function CreatorDashboardPage() {
             )}
           </Card>
         </div>
-      </section>
+        </section>
+      </Reveal>
     </div>
   );
 }

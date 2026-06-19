@@ -33,6 +33,8 @@ import { Pill } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
 import { EmptyState } from "@/components/marketplace/ui/EmptyState";
 import { DemoBadge } from "@/components/marketplace/ui/TrustBadge";
+import { Reveal, Stagger, StaggerItem } from "@/components/fx/motion";
+import { SpotlightCard } from "@/components/fx/SpotlightCard";
 import { cn } from "@/lib/cn";
 
 export const metadata: Metadata = {
@@ -58,16 +60,22 @@ function MetricCard({
   hint?: string;
 }) {
   return (
-    <Card className="flex items-start gap-3.5">
-      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-accent-sky">
-        <Icon className="h-5 w-5" aria-hidden />
-      </span>
-      <div className="min-w-0">
-        <p className="text-2xl font-semibold tracking-tight text-ink">{value}</p>
-        <p className="text-[13px] text-ink-muted">{label}</p>
-        {hint ? <p className="mt-0.5 text-[12px] text-ink-faint">{hint}</p> : null}
-      </div>
-    </Card>
+    <SpotlightCard className="h-full rounded-2xl">
+      <Card interactive className="flex h-full items-start gap-3.5">
+        <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-gradient-to-br from-accent-cyan/15 to-accent-violet/15 text-accent-cyan">
+          <Icon className="h-5 w-5" aria-hidden />
+        </span>
+        <div className="min-w-0">
+          <p className="font-display text-2xl font-semibold tracking-tight text-ink">
+            {value}
+          </p>
+          <p className="text-[13px] text-ink-muted">{label}</p>
+          {hint ? (
+            <p className="mt-0.5 text-[12px] text-ink-faint">{hint}</p>
+          ) : null}
+        </div>
+      </Card>
+    </SpotlightCard>
   );
 }
 
@@ -91,7 +99,9 @@ function PlaceholderSection({
           <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-ink-muted">
             <Icon className="h-4 w-4" aria-hidden />
           </span>
-          <h3 className="text-base font-semibold text-ink">{title}</h3>
+          <h3 className="font-display text-base font-semibold text-ink">
+            {title}
+          </h3>
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-ink-faint">
           <Lock className="h-3 w-3" aria-hidden />
@@ -116,22 +126,33 @@ export default async function AdminPage() {
   // Accessible gate — never redirect, never crash.
   if (!admin) {
     return (
-      <div className="mx-auto max-w-xl">
-        <EmptyState
-          icon={Lock}
-          title="Admin access required"
-          description={
-            flags.demoMode
-              ? "This is the protected admin dashboard. Switch your Demo identity to “Admin” using the account menu above to explore it."
-              : "You need an admin role to view this dashboard. Ask an existing admin for access."
-          }
-          action={
-            <ButtonLink href="/marketplace" variant="secondary">
-              Back to marketplace
-            </ButtonLink>
-          }
-        />
-      </div>
+      <Reveal className="mx-auto max-w-xl">
+        <div className="grain relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.015]">
+          <div
+            aria-hidden
+            className="absolute -right-20 -top-20 h-72 w-72 rounded-full opacity-40 blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle,rgba(139,92,246,0.4),transparent 70%)",
+            }}
+          />
+          <EmptyState
+            className="border-transparent bg-transparent"
+            icon={Lock}
+            title="Admin access required"
+            description={
+              flags.demoMode
+                ? "This is the protected admin dashboard. Switch your Demo identity to “Admin” using the account menu above to explore it."
+                : "You need an admin role to view this dashboard. Ask an existing admin for access."
+            }
+            action={
+              <ButtonLink href="/marketplace" variant="secondary">
+                Back to marketplace
+              </ButtonLink>
+            }
+          />
+        </div>
+      </Reveal>
     );
   }
 
@@ -149,13 +170,13 @@ export default async function AdminPage() {
   return (
     <div className="space-y-10">
       {/* Header */}
-      <header className="space-y-4">
+      <Reveal as="header" className="space-y-4">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-accent-teal/30 bg-accent-teal/10 text-accent-teal">
+          <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-accent-teal/30 bg-gradient-to-br from-accent-teal/20 to-accent-violet/15 text-accent-teal shadow-glow-teal">
             <LayoutDashboard className="h-5 w-5" aria-hidden />
           </span>
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+            <h1 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
               Admin dashboard
             </h1>
             <p className="text-sm text-ink-muted">
@@ -169,59 +190,76 @@ export default async function AdminPage() {
         {flags.demoMode ? (
           <div
             role="note"
-            className="flex items-start gap-2.5 rounded-xl border border-accent-sky/20 bg-accent-sky/[0.06] px-4 py-3 text-[13px] leading-relaxed text-ink-muted"
+            className="relative flex items-start gap-2.5 overflow-hidden rounded-2xl border border-accent-sky/25 bg-accent-sky/[0.06] px-4 py-3.5 text-[13px] leading-relaxed text-ink-muted shadow-glow-blue"
           >
-            <Info className="mt-0.5 h-4 w-4 shrink-0 text-accent-sky" aria-hidden />
-            <p>
-              <span className="font-medium text-ink">Demo mode.</span> All
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-accent-sky/15 blur-3xl"
+            />
+            <Info
+              className="relative mt-0.5 h-4 w-4 shrink-0 text-accent-sky"
+              aria-hidden
+            />
+            <p className="relative">
+              <span className="font-semibold text-ink">Demo mode.</span> All
               numbers below are computed from seed content only — nothing is
               fabricated. Management controls are honest placeholders until a
               backend is connected.
             </p>
           </div>
         ) : null}
-      </header>
+      </Reveal>
 
       {/* Marketplace metrics */}
       <section className="space-y-4">
-        <SectionHeading
-          eyebrow="Overview"
-          title="Marketplace metrics"
-          description="Counts of publicly-visible content, sourced from the data layer."
-        />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <MetricCard
-            label="Public workflows"
-            value={workflows.length}
-            Icon={WorkflowIcon}
+        <Reveal>
+          <SectionHeading
+            eyebrow="Overview"
+            title="Marketplace metrics"
+            description="Counts of publicly-visible content, sourced from the data layer."
           />
-          <MetricCard
-            label="Public plugin listings"
-            value={plugins.length}
-            Icon={Plug}
-          />
-          <MetricCard
-            label="Public creators"
-            value={creators.length}
-            Icon={Users}
-            hint={`${verifiedCreators} verified`}
-          />
-          <MetricCard
-            label="Active categories"
-            value={categories.length}
-            Icon={FolderTree}
-          />
-        </div>
+        </Reveal>
+        <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StaggerItem className="h-full">
+            <MetricCard
+              label="Public workflows"
+              value={workflows.length}
+              Icon={WorkflowIcon}
+            />
+          </StaggerItem>
+          <StaggerItem className="h-full">
+            <MetricCard
+              label="Public plugin listings"
+              value={plugins.length}
+              Icon={Plug}
+            />
+          </StaggerItem>
+          <StaggerItem className="h-full">
+            <MetricCard
+              label="Public creators"
+              value={creators.length}
+              Icon={Users}
+              hint={`${verifiedCreators} verified`}
+            />
+          </StaggerItem>
+          <StaggerItem className="h-full">
+            <MetricCard
+              label="Active categories"
+              value={categories.length}
+              Icon={FolderTree}
+            />
+          </StaggerItem>
+        </Stagger>
       </section>
 
       {/* Pending submissions + quick links */}
-      <section className="grid gap-5 lg:grid-cols-2">
-        <Card className="space-y-4">
+      <Reveal as="section" className="grid gap-5 lg:grid-cols-2">
+        <Card interactive className="space-y-4">
           <div className="flex items-center gap-2.5">
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-amber-400/30 bg-amber-400/10 text-amber-300">
               <Hourglass className="h-4 w-4" aria-hidden />
             </span>
-            <h3 className="text-base font-semibold text-ink">
+            <h3 className="font-display text-base font-semibold text-ink">
               Pending submissions
             </h3>
             {flags.demoMode ? <DemoBadge /> : null}
@@ -254,15 +292,17 @@ export default async function AdminPage() {
             0 open reports · 0 reviewing · 0 resolved
           </div>
         </PlaceholderSection>
-      </section>
+      </Reveal>
 
       {/* Management placeholders */}
       <section className="space-y-4">
-        <SectionHeading
-          eyebrow="Management"
-          title="Admin controls"
-          description="Honest placeholders. These wire up to the database once a backend is connected — nothing here fabricates state."
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow="Management"
+            title="Admin controls"
+            description="Honest placeholders. These wire up to the database once a backend is connected — nothing here fabricates state."
+          />
+        </Reveal>
         <div className="grid gap-5 lg:grid-cols-2">
           <PlaceholderSection
             title="Featured listings"
@@ -315,18 +355,20 @@ export default async function AdminPage() {
 
       {/* Category management */}
       <section className="space-y-4">
-        <SectionHeading
-          eyebrow="Taxonomy"
-          title="Category management"
-          description="Categories drive marketplace filtering. Editing is a placeholder; the current list is shown for reference."
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow="Taxonomy"
+            title="Category management"
+            description="Categories drive marketplace filtering. Editing is a placeholder; the current list is shown for reference."
+          />
+        </Reveal>
         <Card className="space-y-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-ink-muted">
                 <FolderTree className="h-4 w-4" aria-hidden />
               </span>
-              <h3 className="text-base font-semibold text-ink">
+              <h3 className="font-display text-base font-semibold text-ink">
                 Active categories
               </h3>
             </div>
@@ -342,7 +384,7 @@ export default async function AdminPage() {
               {categories.map((cat) => (
                 <li
                   key={cat.id}
-                  className="flex items-center justify-between gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3.5 py-2.5"
+                  className="flex items-center justify-between gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3.5 py-2.5 transition-colors duration-300 hover:border-white/15 hover:bg-white/[0.035]"
                 >
                   <span className="min-w-0">
                     <span className="block truncate text-[13px] font-medium text-ink">
@@ -362,17 +404,19 @@ export default async function AdminPage() {
 
       {/* Feature flags */}
       <section className="space-y-4">
-        <SectionHeading
-          eyebrow="Configuration"
-          title="Feature flags"
-          description="Resolved server-side from environment. Read-only here — change these via env and redeploy."
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow="Configuration"
+            title="Feature flags"
+            description="Resolved server-side from environment. Read-only here — change these via env and redeploy."
+          />
+        </Reveal>
         <Card className="space-y-3">
           <div className="flex items-center gap-2.5">
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-ink-muted">
               <Settings2 className="h-4 w-4" aria-hidden />
             </span>
-            <h3 className="text-base font-semibold text-ink">
+            <h3 className="font-display text-base font-semibold text-ink">
               Marketplace flags
             </h3>
           </div>

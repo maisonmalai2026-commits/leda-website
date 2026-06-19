@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Copy, Heart, GitBranch } from "lucide-react";
+import { ArrowUpRight, Copy, Heart, GitBranch, Workflow } from "lucide-react";
 
 import { Card } from "@/components/ui/Card";
 import { RiskBadge } from "@/components/ui/Badge";
@@ -59,26 +59,34 @@ export function WorkflowCard({
       </div>
 
       {/* Title + creator */}
-      <div className="min-w-0">
-        <h3 className="text-base font-semibold leading-snug text-ink">
-          <Link
-            href={href}
-            className="rounded-sm outline-none after:absolute after:inset-0 focus-visible:ring-2 focus-visible:ring-accent-sky/70"
-          >
-            {workflow.title}
-          </Link>
-        </h3>
-        {handle ? (
-          <p className="mt-1 text-[13px] text-ink-muted">
-            by{" "}
+      <div className="flex items-start gap-3">
+        <span
+          className="mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-gradient-to-br from-accent-cyan/15 to-accent-violet/15 text-accent-cyan transition-colors group-hover:border-accent-cyan/30"
+          aria-hidden
+        >
+          <Workflow className="h-[18px] w-[18px]" />
+        </span>
+        <div className="min-w-0">
+          <h3 className="text-base font-semibold leading-snug text-ink">
             <Link
-              href={`/u/${handle}`}
-              className="relative z-10 font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70"
+              href={href}
+              className="rounded-sm outline-none after:absolute after:inset-0 focus-visible:ring-2 focus-visible:ring-accent-sky/70"
             >
-              @{handle}
+              {workflow.title}
             </Link>
-          </p>
-        ) : null}
+          </h3>
+          {handle ? (
+            <p className="mt-1 text-[13px] text-ink-muted">
+              by{" "}
+              <Link
+                href={`/u/${handle}`}
+                className="relative z-10 font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70"
+              >
+                @{handle}
+              </Link>
+            </p>
+          ) : null}
+        </div>
       </div>
 
       <p className="line-clamp-2 text-sm leading-relaxed text-ink-muted">

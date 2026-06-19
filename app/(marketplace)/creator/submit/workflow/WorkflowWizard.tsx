@@ -163,7 +163,7 @@ function field(
 }
 
 const inputClass =
-  "w-full rounded-xl border border-white/12 bg-white/[0.03] px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:border-accent-sky/40 focus:outline-none focus:ring-2 focus:ring-accent-sky/40";
+  "w-full rounded-xl border border-white/12 bg-white/[0.03] px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint transition-shadow duration-200 focus:border-accent-sky/50 focus:outline-none focus:ring-2 focus:ring-accent-sky/40 focus:shadow-glow-blue";
 
 export function WorkflowWizard() {
   const { toast } = useToast();
@@ -327,10 +327,22 @@ export function WorkflowWizard() {
       ? "ok"
       : "error";
 
+  const progressPct = ((step - 1) / (STEPS.length - 1)) * 100;
+
   return (
     <div className="flex flex-col gap-6">
       {/* Stepper */}
-      <nav aria-label="Submission steps">
+      <nav aria-label="Submission steps" className="flex flex-col gap-3">
+        {/* Progress bar */}
+        <div
+          className="relative h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]"
+          aria-hidden
+        >
+          <div
+            className="absolute inset-y-0 left-0 rounded-full bg-accent-gradient shadow-glow-blue transition-[width] duration-500 ease-out"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
         <ol
           role="list"
           className="flex flex-wrap items-center gap-x-2 gap-y-2 text-[12px]"
@@ -379,13 +391,21 @@ export function WorkflowWizard() {
       </nav>
 
       <Card className="flex flex-col gap-6">
-        <div>
-          <p className="text-[12px] font-medium uppercase tracking-wide text-accent-teal">
-            Step {step} of {STEPS.length}
-          </p>
-          <h2 className="mt-1 text-xl font-semibold text-ink">
-            {current.title}
-          </h2>
+        <div className="flex items-center gap-3.5">
+          <span
+            aria-hidden
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-gradient-to-br from-accent-cyan/15 to-accent-violet/15 font-display text-sm font-semibold tabular-nums text-accent-cyan"
+          >
+            {step}
+          </span>
+          <div>
+            <p className="text-[12px] font-medium uppercase tracking-[0.15em] text-accent-teal">
+              Step {step} of {STEPS.length}
+            </p>
+            <h2 className="mt-0.5 font-display text-xl font-semibold text-ink">
+              {current.title}
+            </h2>
+          </div>
         </div>
 
         {/* Step 1 — basic info */}
@@ -517,7 +537,15 @@ export function WorkflowWizard() {
             {validateState === "ok" && parsedGraph ? (
               <div className="flex flex-col gap-2">
                 <p className="text-sm font-medium text-ink-muted">Preview</p>
-                <WorkflowGraphView graph={parsedGraph} />
+                <div className="relative overflow-hidden rounded-2xl border border-accent-teal/20 bg-accent-teal/[0.03] p-1 shadow-glow-teal">
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-accent-teal/15 blur-3xl"
+                  />
+                  <div className="relative">
+                    <WorkflowGraphView graph={parsedGraph} />
+                  </div>
+                </div>
               </div>
             ) : null}
           </div>
@@ -613,7 +641,15 @@ export function WorkflowWizard() {
                 <p className="text-sm font-medium text-ink-muted">
                   Graph preview
                 </p>
-                <WorkflowGraphView graph={parsedGraph} />
+                <div className="relative overflow-hidden rounded-2xl border border-accent-teal/20 bg-accent-teal/[0.03] p-1 shadow-glow-teal">
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-accent-teal/15 blur-3xl"
+                  />
+                  <div className="relative">
+                    <WorkflowGraphView graph={parsedGraph} />
+                  </div>
+                </div>
               </div>
             ) : (
               <p className="rounded-xl border border-white/[0.08] bg-white/[0.02] px-4 py-3 text-sm text-ink-muted">
@@ -663,9 +699,15 @@ export function WorkflowWizard() {
         {/* Step 8 — submit for review */}
         {step === 8 ? (
           <div className="flex flex-col gap-4">
-            <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
-              <h3 className="text-sm font-semibold text-ink">Review summary</h3>
-              <dl className="mt-3 grid grid-cols-1 gap-x-6 gap-y-2 text-[13px] sm:grid-cols-2">
+            <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02] p-4">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent-violet/10 blur-3xl"
+              />
+              <h3 className="relative text-sm font-semibold text-ink">
+                Review summary
+              </h3>
+              <dl className="relative mt-3 grid grid-cols-1 gap-x-6 gap-y-2 text-[13px] sm:grid-cols-2">
                 <div className="flex justify-between gap-3">
                   <dt className="text-ink-faint">Title</dt>
                   <dd className="truncate text-ink">{title || "—"}</dd>

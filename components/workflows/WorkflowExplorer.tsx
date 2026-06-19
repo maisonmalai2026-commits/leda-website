@@ -7,17 +7,20 @@ import { StatusBadge, RiskBadge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { WorkflowCard } from "@/components/workflows/WorkflowCard";
 import { NodeDiagram } from "@/components/workflows/NodeDiagram";
+import { Stagger, StaggerItem } from "@/components/fx/motion";
 
 export function WorkflowExplorer({ workflows }: { workflows: Workflow[] }) {
   const [active, setActive] = useState<Workflow | null>(null);
 
   return (
     <>
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <Stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {workflows.map((w) => (
-          <WorkflowCard key={w.slug} workflow={w} onView={() => setActive(w)} />
+          <StaggerItem key={w.slug} className="h-full">
+            <WorkflowCard workflow={w} onView={() => setActive(w)} />
+          </StaggerItem>
         ))}
-      </div>
+      </Stagger>
 
       {active ? (
         <WorkflowModal workflow={active} onClose={() => setActive(null)} />
@@ -55,7 +58,7 @@ function WorkflowModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-0 sm:items-center sm:p-6"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-0 backdrop-blur-sm sm:items-center sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-labelledby="workflow-modal-title"
@@ -63,30 +66,36 @@ function WorkflowModal({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-3xl border border-white/[0.1] bg-surface shadow-glow sm:rounded-3xl">
-        {/* header */}
-        <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-white/[0.07] bg-surface px-6 py-5">
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <StatusBadge status={workflow.status} />
-              <RiskBadge risk={workflow.risk} />
+      <div className="gradient-border max-h-[92vh] w-full max-w-2xl overflow-hidden rounded-t-3xl shadow-glow sm:rounded-3xl">
+        <div className="relative max-h-[92vh] overflow-y-auto rounded-[inherit] bg-surface/95 backdrop-blur-xl">
+          {/* header */}
+          <div className="sticky top-0 z-10 flex items-start justify-between gap-4 overflow-hidden border-b border-white/[0.07] bg-surface/90 px-6 py-5 backdrop-blur-xl">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -right-16 -top-20 h-44 w-44 rounded-full opacity-50 blur-3xl"
+              style={{ background: "radial-gradient(circle,rgba(45,212,191,0.3),transparent 70%)" }}
+            />
+            <div className="relative">
+              <div className="flex flex-wrap items-center gap-2">
+                <StatusBadge status={workflow.status} />
+                <RiskBadge risk={workflow.risk} />
+              </div>
+              <h2
+                id="workflow-modal-title"
+                className="mt-3 font-display text-xl font-semibold text-ink"
+              >
+                {workflow.title}
+              </h2>
             </div>
-            <h2
-              id="workflow-modal-title"
-              className="mt-3 text-xl font-semibold text-ink"
+            <button
+              type="button"
+              onClick={onClose}
+              className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] bg-base/40 text-ink-muted transition-colors hover:border-white/20 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan"
+              aria-label="Close"
             >
-              {workflow.title}
-            </h2>
+              <X size={17} />
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] text-ink-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70"
-            aria-label="Close"
-          >
-            <X size={17} />
-          </button>
-        </div>
 
         <div className="space-y-6 px-6 py-6">
           <p className="text-sm leading-relaxed text-ink-muted">
@@ -138,22 +147,28 @@ function WorkflowModal({
           </div>
 
           {/* CTA */}
-          <div className="rounded-2xl border border-white/[0.08] bg-base/40 p-5">
-            <Button onClick={() => setUsedMessage(true)} className="w-full sm:w-auto">
+          <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-accent-blue/[0.06] to-accent-violet/[0.04] p-5">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -bottom-12 -right-8 h-36 w-36 rounded-full opacity-40 blur-3xl"
+              style={{ background: "radial-gradient(circle,rgba(139,92,246,0.3),transparent 70%)" }}
+            />
+            <Button onClick={() => setUsedMessage(true)} className="relative w-full sm:w-auto">
               Use this workflow in Leda
             </Button>
             {usedMessage ? (
-              <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-accent-blue/20 bg-accent-blue/[0.08] px-4 py-3 text-sm text-ink">
+              <div className="relative mt-4 flex items-start gap-2.5 rounded-xl border border-accent-blue/20 bg-accent-blue/[0.08] px-4 py-3 text-sm text-ink">
                 <Info size={16} className="mt-0.5 shrink-0 text-accent-sky" />
                 Open Leda on your computer to use this workflow.
               </div>
             ) : (
-              <p className="mt-3 text-xs text-ink-faint">
+              <p className="relative mt-3 text-xs text-ink-faint">
                 Desktop integration is still in development. For now, this opens a
                 guide rather than launching the app.
               </p>
             )}
           </div>
+        </div>
         </div>
       </div>
     </div>

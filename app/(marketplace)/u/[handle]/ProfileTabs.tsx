@@ -3,6 +3,7 @@
 import { useState, type ReactNode } from "react";
 
 import { Tabs } from "@/components/marketplace/ui/Tabs";
+import { Reveal } from "@/components/fx/motion";
 
 // ---------------------------------------------------------------------------
 // ProfileTabs — thin client wrapper that owns the active-tab state for the
@@ -44,9 +45,11 @@ export function ProfileTabs({
         role="tabpanel"
         aria-label={active === "workflows" ? "Workflows" : "Plugins"}
         tabIndex={0}
-        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70"
+        className="rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70"
       >
-        {active === "workflows" ? workflows : plugins}
+        <Reveal key={active} y={14}>
+          {active === "workflows" ? workflows : plugins}
+        </Reveal>
       </div>
     </div>
   );

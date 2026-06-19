@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/ui/Section";
+import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/PageHeader";
+import { Reveal } from "@/components/fx/motion";
 import { changelog } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -29,47 +31,92 @@ export default function ChangelogPage() {
       />
 
       <Section>
-        <ol className="relative space-y-10 border-l border-white/[0.08] pl-8 sm:pl-10">
-          {changelog.map((entry) => (
-            <li key={entry.version} className="relative">
-              {/* node */}
-              <span
-                className="absolute -left-[41px] top-1 flex h-5 w-5 items-center justify-center rounded-full border border-white/[0.12] bg-surface sm:-left-[49px]"
-                aria-hidden
-              >
+        <ol className="relative space-y-8 pl-8 sm:pl-10">
+          {/* gradient timeline rail */}
+          <span
+            aria-hidden
+            className="absolute left-[5px] top-2 bottom-2 w-px bg-gradient-to-b from-accent-cyan/70 via-accent-violet/40 to-transparent sm:left-[7px]"
+          />
+          {changelog.map((entry) => {
+            const isCurrent = entry.status === "current";
+            return (
+              <li key={entry.version} className="relative">
+                {/* node */}
                 <span
-                  className={`h-2 w-2 rounded-full ${
-                    entry.status === "current"
-                      ? "bg-accent-teal"
-                      : "bg-ink-faint"
+                  className={`absolute -left-[31px] top-1.5 flex h-[14px] w-[14px] items-center justify-center rounded-full border sm:-left-[39px] ${
+                    isCurrent
+                      ? "border-accent-teal/50 bg-base shadow-glow-teal"
+                      : "border-white/[0.14] bg-surface"
                   }`}
-                />
-              </span>
+                  aria-hidden
+                >
+                  <span
+                    className={`h-[6px] w-[6px] rounded-full ${
+                      isCurrent
+                        ? "bg-accent-teal animate-pulse-soft"
+                        : "bg-ink-faint"
+                    }`}
+                  />
+                </span>
 
-              <div className="flex flex-wrap items-center gap-3">
-                <h2 className="font-mono text-lg font-semibold text-ink">
-                  {entry.version}
-                </h2>
-                {entry.status === "current" ? (
-                  <span className="inline-flex items-center rounded-full border border-accent-teal/30 bg-accent-teal/10 px-2.5 py-0.5 text-xs font-medium text-accent-teal">
-                    Latest
-                  </span>
-                ) : null}
-                <span className="text-xs text-ink-faint">{formatDate(entry.date)}</span>
-              </div>
+                <Reveal y={18}>
+                  <Card
+                    className={
+                      isCurrent
+                        ? "relative overflow-hidden border-accent-teal/20 bg-gradient-to-br from-accent-teal/[0.06] to-transparent shadow-glow-teal"
+                        : "transition-colors hover:border-white/15"
+                    }
+                  >
+                    {isCurrent ? (
+                      <div
+                        aria-hidden
+                        className="absolute -right-20 -top-20 h-48 w-48 rounded-full opacity-50 blur-3xl"
+                        style={{
+                          background:
+                            "radial-gradient(circle, rgba(45,212,191,0.32), transparent 70%)",
+                        }}
+                      />
+                    ) : null}
 
-              <p className="mt-1 text-base font-medium text-ink">{entry.title}</p>
+                    <div className="relative flex flex-wrap items-center gap-3">
+                      <h2 className="font-mono text-lg font-semibold text-ink">
+                        {entry.version}
+                      </h2>
+                      {isCurrent ? (
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-teal/30 bg-accent-teal/10 px-2.5 py-0.5 text-xs font-medium text-accent-teal">
+                          <span className="h-1.5 w-1.5 rounded-full bg-accent-teal animate-pulse-soft" />
+                          Latest
+                        </span>
+                      ) : null}
+                      <span className="font-mono text-xs text-ink-faint">
+                        {formatDate(entry.date)}
+                      </span>
+                    </div>
 
-              <ul className="mt-4 space-y-2.5">
-                {entry.notes.map((note, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-ink-muted">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-teal/60" />
-                    {note}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
+                    <p className="relative mt-1.5 font-display text-base font-medium text-ink">
+                      {entry.title}
+                    </p>
+
+                    <ul className="relative mt-4 space-y-2.5">
+                      {entry.notes.map((note, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-2.5 text-sm text-ink-muted"
+                        >
+                          <span
+                            className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${
+                              isCurrent ? "bg-accent-teal" : "bg-accent-cyan/50"
+                            }`}
+                          />
+                          {note}
+                        </li>
+                      ))}
+                    </ul>
+                  </Card>
+                </Reveal>
+              </li>
+            );
+          })}
         </ol>
       </Section>
     </>

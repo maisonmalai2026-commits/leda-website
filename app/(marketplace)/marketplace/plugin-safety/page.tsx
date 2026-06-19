@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 
 import { Card } from "@/components/ui/Card";
+import { Reveal, Stagger, StaggerItem } from "@/components/fx/motion";
+import { SpotlightCard } from "@/components/fx/SpotlightCard";
 
 export const metadata: Metadata = {
   title: "Plugin safety — Leda Marketplace",
@@ -101,90 +103,122 @@ const NEVER_ALLOWED: string[] = [
 
 export default function PluginSafetyPage() {
   return (
-    <div className="space-y-12">
-      <div>
-        <Link
-          href="/marketplace/policies"
-          className="inline-flex items-center gap-1 text-sm text-ink-muted underline-offset-4 hover:text-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70 rounded-sm"
-        >
-          <ChevronLeft className="h-4 w-4" aria-hidden />
-          Marketplace policies
-        </Link>
-        <h1 className="mt-4 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-          Plugin safety
-        </h1>
-        <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-          Leda's plugin model is conservative on purpose. Arbitrary executable
-          code is never automatically installed from the marketplace. Here's
-          exactly how tool listings work and what protects you.
-        </p>
-      </div>
+    <div className="space-y-14">
+      <Reveal>
+        <div className="relative overflow-hidden">
+          <div
+            aria-hidden
+            className="absolute -left-16 -top-24 h-60 w-[36rem] rounded-full opacity-30 blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(45,212,191,0.24), rgba(56,189,248,0.16) 55%, transparent 72%)",
+            }}
+          />
+          <div className="relative max-w-2xl">
+            <Link
+              href="/marketplace/policies"
+              className="inline-flex items-center gap-1 text-sm text-ink-muted underline-offset-4 hover:text-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70 rounded-sm"
+            >
+              <ChevronLeft className="h-4 w-4" aria-hidden />
+              Marketplace policies
+            </Link>
+            <div className="mt-5">
+              <span className="eyebrow">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent-teal animate-pulse-soft" />
+                Conservative by design
+              </span>
+            </div>
+            <h1 className="mt-5 text-balance font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl">
+              Plugin <span className="text-gradient">safety</span>
+            </h1>
+            <p className="mt-4 text-pretty text-[15px] leading-relaxed text-ink-muted sm:text-base">
+              Leda's plugin model is conservative on purpose. Arbitrary
+              executable code is never automatically installed from the
+              marketplace. Here's exactly how tool listings work and what
+              protects you.
+            </p>
+          </div>
+        </div>
+      </Reveal>
 
       {/* Core principles */}
       <section aria-labelledby="principles-heading">
         <h2 id="principles-heading" className="sr-only">
           Safety principles
         </h2>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <Stagger className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {PRINCIPLES.map(({ title, body, Icon }) => (
-            <Card key={title} className="flex flex-col gap-3">
-              <span
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-accent-sky"
-                aria-hidden
-              >
-                <Icon className="h-5 w-5" />
-              </span>
-              <h3 className="text-base font-semibold text-ink">{title}</h3>
-              <p className="text-sm leading-relaxed text-ink-muted">{body}</p>
-            </Card>
+            <StaggerItem key={title} className="flex">
+              <SpotlightCard className="h-full w-full rounded-2xl">
+                <Card interactive className="flex h-full flex-col gap-3">
+                  <span
+                    className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/[0.08] bg-gradient-to-br from-accent-cyan/15 to-accent-violet/15 text-accent-cyan"
+                    aria-hidden
+                  >
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <h3 className="font-display text-base font-semibold text-ink">
+                    {title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-ink-muted">
+                    {body}
+                  </p>
+                </Card>
+              </SpotlightCard>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </section>
 
       {/* Trust tiers */}
       <section aria-labelledby="tiers-heading">
-        <div className="mb-5 max-w-2xl">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent-teal">
-            Reading the badges
-          </p>
-          <h2
-            id="tiers-heading"
-            className="text-2xl font-semibold tracking-tight text-ink"
-          >
-            Trust tiers
-          </h2>
-          <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
-            The trust badge on a listing tells you how much review it has had.
-          </p>
-        </div>
-        <Card className="p-0">
-          <ul className="divide-y divide-white/[0.06]">
-            {TRUST_TIERS.map(({ label, description, box, Icon }) => (
-              <li
-                key={label}
-                className="flex flex-col gap-2 px-5 py-4 sm:flex-row sm:items-center sm:gap-4"
-              >
-                <span
-                  className={`inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${box}`}
+        <Reveal>
+          <div className="mb-6 max-w-2xl">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent-teal">
+              Reading the badges
+            </p>
+            <h2
+              id="tiers-heading"
+              className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl"
+            >
+              Trust tiers
+            </h2>
+            <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">
+              The trust badge on a listing tells you how much review it has had.
+            </p>
+          </div>
+        </Reveal>
+        <Reveal delay={0.05}>
+          <Card className="overflow-hidden p-0">
+            <ul className="divide-y divide-white/[0.06]">
+              {TRUST_TIERS.map(({ label, description, box, Icon }) => (
+                <li
+                  key={label}
+                  className="flex flex-col gap-2 px-5 py-4 transition-colors hover:bg-white/[0.02] sm:flex-row sm:items-center sm:gap-4"
                 >
-                  <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden />
-                  {label}
-                </span>
-                <span className="text-sm leading-relaxed text-ink-muted">
-                  {description}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </Card>
+                  <span
+                    className={`inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${box}`}
+                  >
+                    <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                    {label}
+                  </span>
+                  <span className="text-sm leading-relaxed text-ink-muted">
+                    {description}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </Reveal>
       </section>
 
       {/* Never allowed */}
       <section aria-labelledby="never-heading">
-        <Card className="flex flex-col gap-4">
+        <Reveal>
+        <Card className="flex flex-col gap-4 border-rose-400/15 bg-rose-400/[0.02]">
           <div className="flex items-start gap-3">
             <span
-              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-rose-400/20 bg-rose-400/[0.06] text-rose-300"
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-rose-400/20 bg-rose-400/[0.08] text-rose-300"
               aria-hidden
             >
               <Lock className="h-5 w-5" />
@@ -192,7 +226,7 @@ export default function PluginSafetyPage() {
             <div>
               <h2
                 id="never-heading"
-                className="text-base font-semibold text-ink"
+                className="font-display text-base font-semibold text-ink"
               >
                 What a listing can never do
               </h2>
@@ -234,6 +268,7 @@ export default function PluginSafetyPage() {
             .
           </p>
         </Card>
+        </Reveal>
       </section>
     </div>
   );

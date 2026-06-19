@@ -7,6 +7,7 @@ import { listCategories } from "@/lib/marketplace/data";
 import { SectionHeading } from "@/components/ui/Card";
 import { ButtonLink } from "@/components/ui/Button";
 import { EmptyState } from "@/components/marketplace/ui/EmptyState";
+import { Reveal } from "@/components/fx/motion";
 
 import { PluginForm } from "./PluginForm";
 
@@ -42,25 +43,40 @@ export default async function SubmitPluginPage() {
   if (!user) {
     return (
       <div className="flex flex-col gap-8">
-        <SectionHeading
-          eyebrow="For creators"
-          title="Submit a plugin listing"
-          description="Add a metadata-only plugin listing for review."
-        />
-        <EmptyState
-          icon={ShieldCheck}
-          title="Creator access required"
-          description={
-            flags.demoMode
-              ? "Only creators can submit plugin listings. In demo mode, open the account menu in the top bar and switch your demo identity to “Creator” to use this form."
-              : "Only creators can submit plugin listings. Sign in as a creator to continue."
-          }
-          action={
-            <ButtonLink href="/creator/dashboard" variant="secondary">
-              Go to creator dashboard
-            </ButtonLink>
-          }
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow="For creators"
+            title="Submit a plugin listing"
+            description="Add a metadata-only plugin listing for review."
+          />
+        </Reveal>
+        <Reveal delay={0.1}>
+          <div className="grain relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.015]">
+            <div
+              aria-hidden
+              className="absolute -right-20 -top-20 h-72 w-72 rounded-full opacity-40 blur-3xl"
+              style={{
+                background:
+                  "radial-gradient(circle,rgba(56,189,248,0.4),transparent 70%)",
+              }}
+            />
+            <EmptyState
+              className="border-transparent bg-transparent"
+              icon={ShieldCheck}
+              title="Creator access required"
+              description={
+                flags.demoMode
+                  ? "Only creators can submit plugin listings. In demo mode, open the account menu in the top bar and switch your demo identity to “Creator” to use this form."
+                  : "Only creators can submit plugin listings. Sign in as a creator to continue."
+              }
+              action={
+                <ButtonLink href="/creator/dashboard" variant="secondary">
+                  Go to creator dashboard
+                </ButtonLink>
+              }
+            />
+          </div>
+        </Reveal>
       </div>
     );
   }
@@ -70,11 +86,13 @@ export default async function SubmitPluginPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <SectionHeading
-        eyebrow="For creators"
-        title="Submit a plugin listing"
-        description="Describe your plugin so people can discover it. This is metadata only — the marketplace never accepts code, packages, or executable uploads. A reviewer approves listings before they go live."
-      />
+      <Reveal>
+        <SectionHeading
+          eyebrow="For creators"
+          title="Submit a plugin listing"
+          description="Describe your plugin so people can discover it. This is metadata only — the marketplace never accepts code, packages, or executable uploads. A reviewer approves listings before they go live."
+        />
+      </Reveal>
       <PluginForm categories={categoryOptions} />
     </div>
   );

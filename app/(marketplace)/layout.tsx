@@ -25,13 +25,19 @@ export default async function MarketplaceLayout({
         <div
           role="note"
           aria-label="Demo mode notice"
-          className="border-b border-accent-sky/20 bg-accent-sky/[0.06]"
+          className="relative overflow-hidden border-b border-accent-sky/15 bg-gradient-to-r from-accent-sky/[0.07] via-accent-cyan/[0.04] to-transparent backdrop-blur-sm"
         >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-sky/40 to-transparent"
+          />
           <Container className="flex items-center gap-2.5 py-2 text-[13px] text-ink-muted">
-            <Info
-              className="h-4 w-4 shrink-0 text-accent-sky"
+            <span
+              className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-accent-sky/25 bg-accent-sky/10 text-accent-sky"
               aria-hidden
-            />
+            >
+              <Info className="h-3 w-3" />
+            </span>
             <p className="leading-relaxed">
               <span className="font-medium text-ink">Demo mode</span> — exploring
               with seed data; sign-in below is a local demo identity.

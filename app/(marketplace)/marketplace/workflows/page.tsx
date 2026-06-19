@@ -17,6 +17,7 @@ import {
 import { WorkflowCard } from "@/components/marketplace/WorkflowCard";
 import { EmptyState } from "@/components/marketplace/ui/EmptyState";
 import { SectionHeading } from "@/components/ui/Card";
+import { Reveal, Stagger, StaggerItem } from "@/components/fx/motion";
 import {
   WorkflowFilters,
   type WorkflowFilterParams,
@@ -150,13 +151,27 @@ export default async function WorkflowGalleryPage({
 
   return (
     <div className="flex flex-col gap-8">
-      <SectionHeading
-        eyebrow="Marketplace"
-        title="Workflows"
-        description="Declarative, human-reviewed automations for Leda. Copy any workflow to your private workspace — it stays disabled until you review and enable it yourself."
-      />
+      <Reveal>
+        <div className="grain relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.015] p-6 sm:p-9">
+          <div
+            aria-hidden
+            className="absolute -right-24 -top-24 h-72 w-72 rounded-full opacity-40 blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle,rgba(34,211,238,0.4),transparent 70%)",
+            }}
+          />
+          <SectionHeading
+            eyebrow="Marketplace"
+            title="Workflows"
+            description="Declarative, human-reviewed automations for Leda. Copy any workflow to your private workspace — it stays disabled until you review and enable it yourself."
+          />
+        </div>
+      </Reveal>
 
-      <WorkflowFilters params={params} categories={categories} />
+      <Reveal delay={0.1}>
+        <WorkflowFilters params={params} categories={categories} />
+      </Reveal>
 
       <section aria-label="Workflow results">
         <p
@@ -175,13 +190,13 @@ export default async function WorkflowGalleryPage({
             description="Try widening your search or clearing a filter — every published workflow is free while the marketplace is in demo mode."
           />
         ) : (
-          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <Stagger className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {workflows.map((workflow) => (
-              <li key={workflow.id} className="h-full">
+              <StaggerItem key={workflow.id} className="h-full">
                 <WorkflowCard workflow={workflow} flags={flags} />
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         )}
       </section>
     </div>

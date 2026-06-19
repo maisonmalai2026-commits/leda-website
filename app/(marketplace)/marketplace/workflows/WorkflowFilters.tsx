@@ -69,7 +69,7 @@ const SORT_OPTIONS = [
 ] as const;
 
 const fieldClass =
-  "h-10 w-full rounded-xl border border-white/[0.10] bg-surface px-3 text-sm text-ink transition-colors focus-visible:outline-none focus-visible:border-accent-sky/50 focus-visible:ring-2 focus-visible:ring-accent-sky/40";
+  "h-10 w-full rounded-xl border border-white/[0.10] bg-white/[0.03] px-3 text-sm text-ink transition-colors hover:border-white/20 focus-visible:outline-none focus-visible:border-accent-cyan/50 focus-visible:ring-2 focus-visible:ring-accent-cyan/40";
 
 const labelClass =
   "mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-ink-faint";
@@ -138,7 +138,8 @@ export function WorkflowFilters({
     <section
       aria-label="Filter and sort workflows"
       className={cn(
-        "rounded-2xl border border-white/[0.08] bg-surface/60 p-4 shadow-card sm:p-5",
+        "relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02] p-4 shadow-card backdrop-blur-[2px] sm:p-5",
+        "before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/15 before:to-transparent",
         pending && "opacity-90",
       )}
     >
@@ -343,7 +344,7 @@ export function WorkflowFilters({
         </div>
 
         {/* Footer row: disabled pricing control + reset */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.06] pt-3">
+        <div className="relative flex flex-wrap items-center justify-between gap-3 pt-3 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/[0.10] before:to-transparent">
           <div className="flex items-center gap-2">
             <span className={cn(labelClass, "mb-0")}>Pricing</span>
             <span
@@ -360,7 +361,7 @@ export function WorkflowFilters({
             <button
               type="button"
               onClick={clearAll}
-              className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[13px] font-medium text-ink-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 py-1.5 text-[13px] font-medium text-ink-muted transition-colors hover:border-white/20 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/70"
             >
               <RotateCcw className="h-3.5 w-3.5" aria-hidden />
               Reset filters

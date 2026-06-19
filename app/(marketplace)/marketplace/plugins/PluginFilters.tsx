@@ -55,9 +55,11 @@ const SORT_OPTIONS: { value: PluginSort; label: string }[] = [
 ];
 
 const tab =
-  "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70";
-const tabActive = "bg-white/[0.08] text-ink shadow-sm";
-const tabIdle = "text-ink-muted hover:bg-white/[0.04] hover:text-ink";
+  "rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/70";
+const tabActive =
+  "border-transparent bg-gradient-to-r from-accent-blue/25 to-accent-violet/25 text-ink shadow-glow-blue";
+const tabIdle =
+  "border-white/[0.08] bg-white/[0.02] text-ink-muted hover:border-white/20 hover:text-ink";
 
 export function PluginFilters({
   q,
@@ -139,7 +141,7 @@ export function PluginFilters({
             value={activeSort}
             onChange={(e) => navigate({ sort: e.target.value })}
             disabled={pending}
-            className="h-10 rounded-xl border border-white/12 bg-surface px-3 text-sm text-ink focus:border-accent-sky/40 focus:outline-none focus:ring-2 focus:ring-accent-sky/40 disabled:opacity-60"
+            className="h-10 rounded-xl border border-white/[0.10] bg-white/[0.03] px-3 text-sm text-ink transition-colors hover:border-white/20 focus:border-accent-cyan/50 focus:outline-none focus:ring-2 focus:ring-accent-cyan/40 disabled:opacity-60"
           >
             {SORT_OPTIONS.map((s) => (
               <option key={s.value} value={s.value} className="bg-surface-raised">
@@ -220,10 +222,10 @@ export function PluginFilters({
             onClick={() => navigate({ trust_status: undefined })}
             aria-pressed={!trustStatus}
             className={cn(
-              "rounded-full border px-3 py-1 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70",
+              "rounded-full border px-3 py-1 text-[13px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/70",
               !trustStatus
-                ? "border-accent-sky/30 bg-accent-sky/10 text-accent-sky"
-                : "border-white/12 bg-white/[0.04] text-ink-muted hover:border-white/20 hover:text-ink",
+                ? "border-accent-cyan/30 bg-gradient-to-r from-accent-cyan/15 to-accent-sky/15 text-accent-cyan shadow-glow-teal"
+                : "border-white/[0.08] bg-white/[0.02] text-ink-muted hover:border-white/20 hover:text-ink",
             )}
           >
             Any
@@ -239,10 +241,10 @@ export function PluginFilters({
                 }
                 aria-pressed={isActive}
                 className={cn(
-                  "rounded-full border px-3 py-1 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70",
+                  "rounded-full border px-3 py-1 text-[13px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/70",
                   isActive
-                    ? "border-accent-sky/30 bg-accent-sky/10 text-accent-sky"
-                    : "border-white/12 bg-white/[0.04] text-ink-muted hover:border-white/20 hover:text-ink",
+                    ? "border-accent-cyan/30 bg-gradient-to-r from-accent-cyan/15 to-accent-sky/15 text-accent-cyan shadow-glow-teal"
+                    : "border-white/[0.08] bg-white/[0.02] text-ink-muted hover:border-white/20 hover:text-ink",
                 )}
               >
                 {t.label}

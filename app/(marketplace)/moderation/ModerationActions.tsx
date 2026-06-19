@@ -141,7 +141,7 @@ export function ModerationActions({
           placeholder="Explain the decision for the audit log…"
           className={cn(
             "w-full resize-y rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-ink placeholder:text-ink-faint",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70",
+            "transition-shadow duration-200 focus-visible:border-accent-sky/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70 focus-visible:shadow-glow-blue",
           )}
         />
       </div>
@@ -160,9 +160,9 @@ export function ModerationActions({
               disabled={isPending}
               onClick={() => requestAction(def)}
               className={cn(
-                "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[13px] font-medium transition-colors",
+                "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[13px] font-medium transition-all duration-200 hover:-translate-y-px active:translate-y-0",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70",
-                "disabled:cursor-not-allowed disabled:opacity-50",
+                "disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0",
                 def.tone,
               )}
             >

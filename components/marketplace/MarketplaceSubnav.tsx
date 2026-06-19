@@ -41,21 +41,25 @@ export function MarketplaceSubnav({
   return (
     <nav
       aria-label="Marketplace"
-      className="sticky top-16 z-30 border-b border-white/[0.06] bg-base/85 backdrop-blur supports-[backdrop-filter]:bg-base/70"
+      className="sticky top-16 z-30 border-b border-white/[0.06] bg-base/80 backdrop-blur-xl supports-[backdrop-filter]:bg-base/60"
     >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
+      />
       <div className="mx-auto flex h-14 max-w-content items-center justify-between gap-3 px-5 sm:px-6 lg:px-8">
         {/* Desktop links */}
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.02] p-1 md:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               aria-current={isActive(link) ? "page" : undefined}
               className={cn(
-                "rounded-lg px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70",
+                "relative rounded-full px-3.5 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70",
                 isActive(link)
-                  ? "bg-white/[0.06] text-ink"
-                  : "text-ink-muted hover:text-ink",
+                  ? "border border-white/[0.10] bg-gradient-to-br from-accent-cyan/[0.14] to-accent-violet/[0.14] font-medium text-ink shadow-[0_0_18px_-6px_rgba(56,189,248,0.5)]"
+                  : "border border-transparent text-ink-muted hover:text-ink",
               )}
             >
               {link.label}
@@ -67,7 +71,7 @@ export function MarketplaceSubnav({
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-ink-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70 md:hidden"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-ink-muted transition-colors hover:border-white/20 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70 md:hidden"
           aria-label={open ? "Close marketplace menu" : "Open marketplace menu"}
           aria-expanded={open}
           aria-controls="marketplace-mobile-nav"
@@ -94,7 +98,7 @@ export function MarketplaceSubnav({
       {open ? (
         <div
           id="marketplace-mobile-nav"
-          className="border-t border-white/[0.06] bg-base md:hidden"
+          className="border-t border-white/[0.06] bg-base/95 backdrop-blur-xl md:hidden"
         >
           <div className="mx-auto max-w-content space-y-1 px-5 py-3 sm:px-6">
             {NAV_LINKS.map((link) => (
@@ -106,8 +110,8 @@ export function MarketplaceSubnav({
                 className={cn(
                   "block rounded-lg px-3 py-2.5 text-sm transition-colors",
                   isActive(link)
-                    ? "bg-white/[0.06] text-ink"
-                    : "text-ink-muted hover:bg-white/[0.04] hover:text-ink",
+                    ? "border border-white/[0.08] bg-gradient-to-br from-accent-cyan/[0.12] to-accent-violet/[0.12] font-medium text-ink"
+                    : "border border-transparent text-ink-muted hover:bg-white/[0.04] hover:text-ink",
                 )}
               >
                 {link.label}

@@ -22,6 +22,7 @@ import type { PluginListing } from "@/lib/marketplace/types";
 
 import { Card, SectionHeading } from "@/components/ui/Card";
 import { Pill } from "@/components/ui/Badge";
+import { Reveal } from "@/components/fx/motion";
 import {
   DemoBadge,
   ListingOnlyBadge,
@@ -148,7 +149,19 @@ export default async function PluginDetailPage({ params }: PageProps) {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
         {/* Main column */}
         <div className="flex flex-col gap-8">
-          <header className="flex flex-col gap-4">
+          <Reveal
+            as="header"
+            className="grain relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.015] p-6 sm:p-8"
+          >
+            <div
+              aria-hidden
+              className="absolute -right-24 -top-24 h-64 w-64 rounded-full opacity-40 blur-3xl"
+              style={{
+                background:
+                  "radial-gradient(circle,rgba(56,189,248,0.4),transparent 70%)",
+              }}
+            />
+            <div className="relative flex flex-col gap-4">
             <div className="flex flex-wrap items-center gap-2">
               <TrustBadge status={plugin.trust_status} />
               <ModerationBadge status={plugin.moderation_status} />
@@ -160,7 +173,7 @@ export default async function PluginDetailPage({ params }: PageProps) {
             </div>
 
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+              <h1 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-4xl">
                 {plugin.name}
               </h1>
               <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-muted">
@@ -214,7 +227,8 @@ export default async function PluginDetailPage({ params }: PageProps) {
               <BookmarkButton targetType="plugin" targetId={plugin.id} />
               <ReportButton targetType="plugin" targetId={plugin.id} />
             </div>
-          </header>
+            </div>
+          </Reveal>
 
           {/* About */}
           <section aria-labelledby="about-heading" className="flex flex-col gap-3">
@@ -244,8 +258,9 @@ export default async function PluginDetailPage({ params }: PageProps) {
               Permissions
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Card className="flex flex-col gap-3 p-5">
-                <h3 className="text-sm font-semibold text-ink">
+              <Card className="flex flex-col gap-3 border-accent-teal/15 bg-gradient-to-b from-accent-teal/[0.06] to-transparent p-5">
+                <h3 className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                  <Check className="h-3.5 w-3.5 text-accent-teal" aria-hidden />
                   What it can access
                 </h3>
                 {permissions.length > 0 ? (
@@ -270,9 +285,9 @@ export default async function PluginDetailPage({ params }: PageProps) {
                 )}
               </Card>
 
-              <Card className="flex flex-col gap-3 p-5">
+              <Card className="flex flex-col gap-3 border-rose-400/15 bg-gradient-to-b from-rose-400/[0.05] to-transparent p-5">
                 <h3 className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-                  <Lock className="h-3.5 w-3.5 text-ink-faint" aria-hidden />
+                  <Lock className="h-3.5 w-3.5 text-rose-300/80" aria-hidden />
                   What it cannot access
                 </h3>
                 {cannotAccess.length > 0 ? (
@@ -431,23 +446,27 @@ export default async function PluginDetailPage({ params }: PageProps) {
 
         {/* Sidebar: install state + at-a-glance */}
         <aside className="flex flex-col gap-5 lg:sticky lg:top-6 lg:self-start">
-          <Card className="flex flex-col gap-4 p-5">
-            <h2 className="text-sm font-semibold text-ink">Install in Leda</h2>
-            <OpenInLedaButton
-              kind="plugin"
-              slug={plugin.slug}
-              trustStatus={plugin.trust_status}
-            />
-            {isListingOnly ? <ListingOnlyBadge /> : null}
-            <p className="text-[12px] leading-relaxed text-ink-faint">
-              {isReviewedTier(plugin)
-                ? "This listing has been reviewed. Desktop installation support is on the way — nothing is installed from this page."
-                : "Listing only. Community code is not automatically installed by Leda. Review the source before using it."}
-            </p>
-          </Card>
+          <div className="gradient-border rounded-2xl">
+            <Card className="flex flex-col gap-4 border-transparent bg-gradient-to-b from-accent-blue/[0.07] to-transparent p-5 shadow-glow-blue">
+              <h2 className="font-display text-sm font-semibold text-ink">
+                Install in Leda
+              </h2>
+              <OpenInLedaButton
+                kind="plugin"
+                slug={plugin.slug}
+                trustStatus={plugin.trust_status}
+              />
+              {isListingOnly ? <ListingOnlyBadge /> : null}
+              <p className="text-[12px] leading-relaxed text-ink-faint">
+                {isReviewedTier(plugin)
+                  ? "This listing has been reviewed. Desktop installation support is on the way — nothing is installed from this page."
+                  : "Listing only. Community code is not automatically installed by Leda. Review the source before using it."}
+              </p>
+            </Card>
+          </div>
 
           <Card className="flex flex-col gap-3 p-5">
-            <h2 className="text-sm font-semibold text-ink">At a glance</h2>
+            <h2 className="font-display text-sm font-semibold text-ink">At a glance</h2>
             <dl className="flex flex-col gap-2.5 text-[13px]">
               <div className="flex items-center justify-between gap-3">
                 <dt className="text-ink-faint">Trust tier</dt>

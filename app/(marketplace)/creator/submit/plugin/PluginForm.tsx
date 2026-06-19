@@ -3,7 +3,9 @@
 import { useId, useState, useTransition } from "react";
 import {
   CircleAlert,
+  FileText,
   Loader2,
+  Plug,
   Send,
   ShieldCheck,
   TriangleAlert,
@@ -55,7 +57,7 @@ const INSTALL_OPTIONS: {
 ];
 
 const inputClass =
-  "w-full rounded-xl border border-white/12 bg-white/[0.03] px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:border-accent-sky/40 focus:outline-none focus:ring-2 focus:ring-accent-sky/40";
+  "w-full rounded-xl border border-white/12 bg-white/[0.03] px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint transition-shadow duration-200 focus:border-accent-sky/50 focus:outline-none focus:ring-2 focus:ring-accent-sky/40 focus:shadow-glow-blue";
 
 function IssueList({ issues }: { issues: ValidationIssue[] }) {
   if (issues.length === 0) return null;
@@ -199,7 +201,12 @@ export function PluginForm({
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
       <Card className="flex flex-col gap-5">
-        <h2 className="text-base font-semibold text-ink">Listing details</h2>
+        <h2 className="flex items-center gap-2.5 font-display text-base font-semibold text-ink">
+          <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] bg-gradient-to-br from-accent-cyan/15 to-accent-violet/15 text-accent-cyan">
+            <FileText className="h-4 w-4" aria-hidden />
+          </span>
+          Listing details
+        </h2>
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor={nameId} className="text-sm font-medium text-ink-muted">
@@ -289,7 +296,10 @@ export function PluginForm({
       </Card>
 
       <Card className="flex flex-col gap-5">
-        <h2 className="text-base font-semibold text-ink">
+        <h2 className="flex items-center gap-2.5 font-display text-base font-semibold text-ink">
+          <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] bg-gradient-to-br from-accent-cyan/15 to-accent-violet/15 text-accent-cyan">
+            <Plug className="h-4 w-4" aria-hidden />
+          </span>
           Compatibility &amp; permissions
         </h2>
 
@@ -367,7 +377,10 @@ export function PluginForm({
       </Card>
 
       <Card className="flex flex-col gap-5">
-        <h2 className="text-base font-semibold text-ink">
+        <h2 className="flex items-center gap-2.5 font-display text-base font-semibold text-ink">
+          <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] bg-gradient-to-br from-accent-cyan/15 to-accent-violet/15 text-accent-cyan">
+            <Send className="h-4 w-4" aria-hidden />
+          </span>
           Links &amp; release notes
         </h2>
 
@@ -464,13 +477,17 @@ export function PluginForm({
         </div>
       </Card>
 
-      <Card className="flex flex-col gap-4">
+      <Card className="relative flex flex-col gap-4 overflow-hidden">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-accent-teal/10 blur-3xl"
+        />
         <label
           htmlFor={confirmId}
           className={cn(
-            "flex cursor-pointer items-start gap-3 rounded-xl border px-4 py-3 transition-colors",
+            "relative flex cursor-pointer items-start gap-3 rounded-xl border px-4 py-3 transition-colors",
             confirmed
-              ? "border-emerald-400/30 bg-emerald-400/[0.06]"
+              ? "border-emerald-400/30 bg-emerald-400/[0.06] shadow-glow-teal"
               : "border-amber-400/25 bg-amber-400/[0.05] hover:bg-amber-400/[0.08]",
           )}
         >
@@ -492,10 +509,12 @@ export function PluginForm({
         </label>
 
         {validation && validation.issues.length > 0 ? (
-          <IssueList issues={validation.issues} />
+          <div className="relative">
+            <IssueList issues={validation.issues} />
+          </div>
         ) : null}
 
-        <div>
+        <div className="relative">
           <Button
             type="submit"
             variant="primary"

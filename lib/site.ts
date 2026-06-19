@@ -35,7 +35,7 @@ export const primaryNav: NavItem[] = [
   { label: "Marketplace", href: "/marketplace" },
   { label: "Vision", href: "/about" },
   { label: "Privacy", href: "/privacy" },
-  { label: "Download", href: "/download" },
+  { label: "Preorder", href: "/download" },
 ];
 
 export const footerNav: NavItem[] = [
