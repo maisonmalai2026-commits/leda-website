@@ -1,0 +1,784 @@
+[
+  {
+    "id": "wf_verified_whatsapp_message",
+    "owner_id": "prof_rin_flows",
+    "slug": "verified-whatsapp-message",
+    "title": "Verified WhatsApp Message",
+    "short_description": "Draft a WhatsApp message, confirm before sending, and verify it was delivered.",
+    "long_description": "A safety-first messaging flow. The main brain drafts a WhatsApp message from your prompt, then pauses for an explicit confirmation before anything is sent. After sending through the WhatsApp Agent plugin, it verifies the result and notifies you of the outcome. Nothing is sent without your approval.",
+    "category_id": "cat_communication",
+    "tags": ["whatsapp", "messaging", "confirmation", "safety"],
+    "workflow_json": {
+      "nodes": [
+        {
+          "id": "n_trigger",
+          "type": "manual_trigger",
+          "label": "Start",
+          "config": { "input": "recipient and message intent" },
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "n_brain",
+          "type": "main_brain",
+          "label": "Draft message",
+          "config": { "instruction": "Draft a concise WhatsApp message for the recipient." },
+          "position": { "x": 220, "y": 0 }
+        },
+        {
+          "id": "n_confirm",
+          "type": "ask_confirmation",
+          "label": "Confirm before sending",
+          "config": { "prompt": "Send this WhatsApp message?" },
+          "position": { "x": 440, "y": 0 }
+        },
+        {
+          "id": "n_send",
+          "type": "call_native_plugin",
+          "label": "Send via WhatsApp Agent",
+          "config": { "plugin": "whatsapp-agent", "action": "send_message" },
+          "position": { "x": 660, "y": 0 }
+        },
+        {
+          "id": "n_verify",
+          "type": "verify_result",
+          "label": "Verify delivery",
+          "config": { "check": "message_delivered" },
+          "position": { "x": 880, "y": 0 }
+        },
+        {
+          "id": "n_notify",
+          "type": "notify_user",
+          "label": "Notify outcome",
+          "config": { "channel": "in_app" },
+          "position": { "x": 1100, "y": 0 }
+        },
+        {
+          "id": "n_end",
+          "type": "end",
+          "label": "Done",
+          "position": { "x": 1320, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "n_trigger", "target": "n_brain" },
+        { "id": "e2", "source": "n_brain", "target": "n_confirm" },
+        { "id": "e3", "source": "n_confirm", "target": "n_send", "condition": "approved" },
+        { "id": "e4", "source": "n_send", "target": "n_verify" },
+        { "id": "e5", "source": "n_verify", "target": "n_notify" },
+        { "id": "e6", "source": "n_notify", "target": "n_end" }
+      ]
+    },
+    "preview_graph_json": {
+      "nodes": [
+        {
+          "id": "n_trigger",
+          "type": "manual_trigger",
+          "label": "Start",
+          "config": { "input": "recipient and message intent" },
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "n_brain",
+          "type": "main_brain",
+          "label": "Draft message",
+          "config": { "instruction": "Draft a concise WhatsApp message for the recipient." },
+          "position": { "x": 220, "y": 0 }
+        },
+        {
+          "id": "n_confirm",
+          "type": "ask_confirmation",
+          "label": "Confirm before sending",
+          "config": { "prompt": "Send this WhatsApp message?" },
+          "position": { "x": 440, "y": 0 }
+        },
+        {
+          "id": "n_send",
+          "type": "call_native_plugin",
+          "label": "Send via WhatsApp Agent",
+          "config": { "plugin": "whatsapp-agent", "action": "send_message" },
+          "position": { "x": 660, "y": 0 }
+        },
+        {
+          "id": "n_verify",
+          "type": "verify_result",
+          "label": "Verify delivery",
+          "config": { "check": "message_delivered" },
+          "position": { "x": 880, "y": 0 }
+        },
+        {
+          "id": "n_notify",
+          "type": "notify_user",
+          "label": "Notify outcome",
+          "config": { "channel": "in_app" },
+          "position": { "x": 1100, "y": 0 }
+        },
+        {
+          "id": "n_end",
+          "type": "end",
+          "label": "Done",
+          "position": { "x": 1320, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "n_trigger", "target": "n_brain" },
+        { "id": "e2", "source": "n_brain", "target": "n_confirm" },
+        { "id": "e3", "source": "n_confirm", "target": "n_send", "condition": "approved" },
+        { "id": "e4", "source": "n_send", "target": "n_verify" },
+        { "id": "e5", "source": "n_verify", "target": "n_notify" },
+        { "id": "e6", "source": "n_notify", "target": "n_end" }
+      ]
+    },
+    "required_plugins": [
+      { "slug": "whatsapp-agent", "name": "WhatsApp Agent" }
+    ],
+    "declared_permissions": ["Send WhatsApp messages", "Read your draft input"],
+    "risk_level": "high",
+    "skill_level": "intermediate",
+    "visibility": "public",
+    "moderation_status": "approved",
+    "pricing_model": "free",
+    "version": "1.0.0",
+    "copied_count": 38,
+    "like_count": 21,
+    "bookmark_count": 12,
+    "rating_avg": 4.6,
+    "rating_count": 9,
+    "published_at": "2026-02-03T10:00:00.000Z",
+    "created_at": "2026-02-01T10:00:00.000Z",
+    "updated_at": "2026-02-03T10:00:00.000Z",
+    "is_demo": true
+  },
+  {
+    "id": "wf_tomorrows_class_reminder",
+    "owner_id": "prof_leo_studies",
+    "slug": "tomorrows-class-reminder",
+    "title": "Tomorrow's Class Reminder",
+    "short_description": "Check tomorrow's schedule and send yourself a reminder of what's coming up.",
+    "long_description": "Every evening this flow reads your calendar for tomorrow's classes and sends a tidy reminder so you can prepare. Runs on a schedule and notifies you in-app.",
+    "category_id": "cat_education",
+    "tags": ["reminders", "calendar", "school", "schedule"],
+    "workflow_json": {
+      "nodes": [
+        {
+          "id": "n_trigger",
+          "type": "schedule_trigger",
+          "label": "Every evening",
+          "config": { "cron": "0 19 * * *" },
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "n_calendar",
+          "type": "call_native_plugin",
+          "label": "Read tomorrow's classes",
+          "config": { "plugin": "calendar-reminder-tool", "action": "list_events", "range": "tomorrow" },
+          "position": { "x": 220, "y": 0 }
+        },
+        {
+          "id": "n_brain",
+          "type": "main_brain",
+          "label": "Summarize schedule",
+          "config": { "instruction": "Write a short reminder of tomorrow's classes." },
+          "position": { "x": 440, "y": 0 }
+        },
+        {
+          "id": "n_notify",
+          "type": "notify_user",
+          "label": "Send reminder",
+          "config": { "channel": "in_app" },
+          "position": { "x": 660, "y": 0 }
+        },
+        {
+          "id": "n_end",
+          "type": "end",
+          "label": "Done",
+          "position": { "x": 880, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "n_trigger", "target": "n_calendar" },
+        { "id": "e2", "source": "n_calendar", "target": "n_brain" },
+        { "id": "e3", "source": "n_brain", "target": "n_notify" },
+        { "id": "e4", "source": "n_notify", "target": "n_end" }
+      ]
+    },
+    "preview_graph_json": {
+      "nodes": [
+        {
+          "id": "n_trigger",
+          "type": "schedule_trigger",
+          "label": "Every evening",
+          "config": { "cron": "0 19 * * *" },
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "n_calendar",
+          "type": "call_native_plugin",
+          "label": "Read tomorrow's classes",
+          "config": { "plugin": "calendar-reminder-tool", "action": "list_events", "range": "tomorrow" },
+          "position": { "x": 220, "y": 0 }
+        },
+        {
+          "id": "n_brain",
+          "type": "main_brain",
+          "label": "Summarize schedule",
+          "config": { "instruction": "Write a short reminder of tomorrow's classes." },
+          "position": { "x": 440, "y": 0 }
+        },
+        {
+          "id": "n_notify",
+          "type": "notify_user",
+          "label": "Send reminder",
+          "config": { "channel": "in_app" },
+          "position": { "x": 660, "y": 0 }
+        },
+        {
+          "id": "n_end",
+          "type": "end",
+          "label": "Done",
+          "position": { "x": 880, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "n_trigger", "target": "n_calendar" },
+        { "id": "e2", "source": "n_calendar", "target": "n_brain" },
+        { "id": "e3", "source": "n_brain", "target": "n_notify" },
+        { "id": "e4", "source": "n_notify", "target": "n_end" }
+      ]
+    },
+    "required_plugins": [
+      { "slug": "calendar-reminder-tool", "name": "Calendar Reminder Tool" }
+    ],
+    "declared_permissions": ["Read your calendar", "Send you notifications"],
+    "risk_level": "low",
+    "skill_level": "beginner",
+    "visibility": "public",
+    "moderation_status": "approved",
+    "pricing_model": "free",
+    "version": "1.0.0",
+    "copied_count": 54,
+    "like_count": 33,
+    "bookmark_count": 19,
+    "rating_avg": 4.8,
+    "rating_count": 12,
+    "published_at": "2026-02-06T10:00:00.000Z",
+    "created_at": "2026-02-04T10:00:00.000Z",
+    "updated_at": "2026-02-06T10:00:00.000Z",
+    "is_demo": true
+  },
+  {
+    "id": "wf_study_plan_builder",
+    "owner_id": "prof_leo_studies",
+    "slug": "study-plan-builder",
+    "title": "Study Plan Builder",
+    "short_description": "Turn a topic and a deadline into a day-by-day study plan.",
+    "long_description": "Give it a subject and a target date and the main brain breaks the work into a realistic day-by-day plan. It checks whether your deadline is tight and adjusts the pace, then saves the plan to your notes.",
+    "category_id": "cat_education",
+    "tags": ["study", "planning", "education", "notes"],
+    "workflow_json": {
+      "nodes": [
+        {
+          "id": "n_trigger",
+          "type": "manual_trigger",
+          "label": "Start",
+          "config": { "input": "subject and deadline" },
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "n_check",
+          "type": "condition",
+          "label": "Deadline tight?",
+          "config": { "expression": "days_until_deadline < 7" },
+          "position": { "x": 220, "y": 0 }
+        },
+        {
+          "id": "n_brain_fast",
+          "type": "main_brain",
+          "label": "Build intensive plan",
+          "config": { "instruction": "Create a compressed study plan." },
+          "position": { "x": 440, "y": -80 }
+        },
+        {
+          "id": "n_brain_steady",
+          "type": "main_brain",
+          "label": "Build steady plan",
+          "config": { "instruction": "Create a paced study plan." },
+          "position": { "x": 440, "y": 80 }
+        },
+        {
+          "id": "n_save",
+          "type": "call_native_plugin",
+          "label": "Save to notes",
+          "config": { "plugin": "notes-summarizer", "action": "save_note" },
+          "position": { "x": 660, "y": 0 }
+        },
+        {
+          "id": "n_end",
+          "type": "end",
+          "label": "Done",
+          "position": { "x": 880, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "n_trigger", "target": "n_check" },
+        { "id": "e2", "source": "n_check", "target": "n_brain_fast", "condition": "true" },
+        { "id": "e3", "source": "n_check", "target": "n_brain_steady", "condition": "false" },
+        { "id": "e4", "source": "n_brain_fast", "target": "n_save" },
+        { "id": "e5", "source": "n_brain_steady", "target": "n_save" },
+        { "id": "e6", "source": "n_save", "target": "n_end" }
+      ]
+    },
+    "preview_graph_json": {
+      "nodes": [
+        {
+          "id": "n_trigger",
+          "type": "manual_trigger",
+          "label": "Start",
+          "config": { "input": "subject and deadline" },
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "n_check",
+          "type": "condition",
+          "label": "Deadline tight?",
+          "config": { "expression": "days_until_deadline < 7" },
+          "position": { "x": 220, "y": 0 }
+        },
+        {
+          "id": "n_brain_fast",
+          "type": "main_brain",
+          "label": "Build intensive plan",
+          "config": { "instruction": "Create a compressed study plan." },
+          "position": { "x": 440, "y": -80 }
+        },
+        {
+          "id": "n_brain_steady",
+          "type": "main_brain",
+          "label": "Build steady plan",
+          "config": { "instruction": "Create a paced study plan." },
+          "position": { "x": 440, "y": 80 }
+        },
+        {
+          "id": "n_save",
+          "type": "call_native_plugin",
+          "label": "Save to notes",
+          "config": { "plugin": "notes-summarizer", "action": "save_note" },
+          "position": { "x": 660, "y": 0 }
+        },
+        {
+          "id": "n_end",
+          "type": "end",
+          "label": "Done",
+          "position": { "x": 880, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "n_trigger", "target": "n_check" },
+        { "id": "e2", "source": "n_check", "target": "n_brain_fast", "condition": "true" },
+        { "id": "e3", "source": "n_check", "target": "n_brain_steady", "condition": "false" },
+        { "id": "e4", "source": "n_brain_fast", "target": "n_save" },
+        { "id": "e5", "source": "n_brain_steady", "target": "n_save" },
+        { "id": "e6", "source": "n_save", "target": "n_end" }
+      ]
+    },
+    "required_plugins": [
+      { "slug": "notes-summarizer", "name": "Notes Summarizer" }
+    ],
+    "declared_permissions": ["Save notes on your behalf"],
+    "risk_level": "low",
+    "skill_level": "beginner",
+    "visibility": "public",
+    "moderation_status": "approved",
+    "pricing_model": "free",
+    "version": "1.0.0",
+    "copied_count": 41,
+    "like_count": 27,
+    "bookmark_count": 15,
+    "rating_avg": 4.7,
+    "rating_count": 10,
+    "published_at": "2026-02-08T10:00:00.000Z",
+    "created_at": "2026-02-05T10:00:00.000Z",
+    "updated_at": "2026-02-08T10:00:00.000Z",
+    "is_demo": true
+  },
+  {
+    "id": "wf_note_summarizer",
+    "owner_id": "prof_ada_makes",
+    "slug": "note-summarizer",
+    "title": "Note Summarizer",
+    "short_description": "Summarize a long note into key points and save the result.",
+    "long_description": "Paste or point at a long note and the main brain produces a tight summary with key takeaways. The summary is saved back through the Notes Summarizer plugin so it's there when you need it.",
+    "category_id": "cat_writing",
+    "tags": ["summary", "notes", "writing"],
+    "workflow_json": {
+      "nodes": [
+        {
+          "id": "n_trigger",
+          "type": "manual_trigger",
+          "label": "Start",
+          "config": { "input": "note text" },
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "n_brain",
+          "type": "main_brain",
+          "label": "Summarize",
+          "config": { "instruction": "Summarize the note into key points." },
+          "position": { "x": 220, "y": 0 }
+        },
+        {
+          "id": "n_save",
+          "type": "call_native_plugin",
+          "label": "Save summary",
+          "config": { "plugin": "notes-summarizer", "action": "save_note" },
+          "position": { "x": 440, "y": 0 }
+        },
+        {
+          "id": "n_notify",
+          "type": "notify_user",
+          "label": "Notify done",
+          "config": { "channel": "in_app" },
+          "position": { "x": 660, "y": 0 }
+        },
+        {
+          "id": "n_end",
+          "type": "end",
+          "label": "Done",
+          "position": { "x": 880, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "n_trigger", "target": "n_brain" },
+        { "id": "e2", "source": "n_brain", "target": "n_save" },
+        { "id": "e3", "source": "n_save", "target": "n_notify" },
+        { "id": "e4", "source": "n_notify", "target": "n_end" }
+      ]
+    },
+    "preview_graph_json": {
+      "nodes": [
+        {
+          "id": "n_trigger",
+          "type": "manual_trigger",
+          "label": "Start",
+          "config": { "input": "note text" },
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "n_brain",
+          "type": "main_brain",
+          "label": "Summarize",
+          "config": { "instruction": "Summarize the note into key points." },
+          "position": { "x": 220, "y": 0 }
+        },
+        {
+          "id": "n_save",
+          "type": "call_native_plugin",
+          "label": "Save summary",
+          "config": { "plugin": "notes-summarizer", "action": "save_note" },
+          "position": { "x": 440, "y": 0 }
+        },
+        {
+          "id": "n_notify",
+          "type": "notify_user",
+          "label": "Notify done",
+          "config": { "channel": "in_app" },
+          "position": { "x": 660, "y": 0 }
+        },
+        {
+          "id": "n_end",
+          "type": "end",
+          "label": "Done",
+          "position": { "x": 880, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "n_trigger", "target": "n_brain" },
+        { "id": "e2", "source": "n_brain", "target": "n_save" },
+        { "id": "e3", "source": "n_save", "target": "n_notify" },
+        { "id": "e4", "source": "n_notify", "target": "n_end" }
+      ]
+    },
+    "required_plugins": [
+      { "slug": "notes-summarizer", "name": "Notes Summarizer" }
+    ],
+    "declared_permissions": ["Read the note you provide", "Save notes on your behalf"],
+    "risk_level": "low",
+    "skill_level": "beginner",
+    "visibility": "public",
+    "moderation_status": "approved",
+    "pricing_model": "free",
+    "version": "1.0.0",
+    "copied_count": 67,
+    "like_count": 44,
+    "bookmark_count": 23,
+    "rating_avg": 4.9,
+    "rating_count": 15,
+    "published_at": "2026-02-10T10:00:00.000Z",
+    "created_at": "2026-02-07T10:00:00.000Z",
+    "updated_at": "2026-02-10T10:00:00.000Z",
+    "is_demo": true
+  },
+  {
+    "id": "wf_email_draft_helper",
+    "owner_id": "prof_ada_makes",
+    "slug": "email-draft-helper",
+    "title": "Email Draft Helper",
+    "short_description": "Turn a few bullet points into a polished email draft you can review.",
+    "long_description": "Give it the gist and the main brain drafts a clear, professional email. It pauses for you to review the draft before anything is finalized, then surfaces the result for copy or send. No email is sent automatically.",
+    "category_id": "cat_writing",
+    "tags": ["email", "writing", "drafting", "communication"],
+    "workflow_json": {
+      "nodes": [
+        {
+          "id": "n_trigger",
+          "type": "manual_trigger",
+          "label": "Start",
+          "config": { "input": "email intent and key points" },
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "n_brain",
+          "type": "main_brain",
+          "label": "Draft email",
+          "config": { "instruction": "Draft a professional email from the points." },
+          "position": { "x": 220, "y": 0 }
+        },
+        {
+          "id": "n_confirm",
+          "type": "ask_confirmation",
+          "label": "Review draft",
+          "config": { "prompt": "Does this draft look good?" },
+          "position": { "x": 440, "y": 0 }
+        },
+        {
+          "id": "n_notify",
+          "type": "notify_user",
+          "label": "Surface final draft",
+          "config": { "channel": "in_app" },
+          "position": { "x": 660, "y": 0 }
+        },
+        {
+          "id": "n_end",
+          "type": "end",
+          "label": "Done",
+          "position": { "x": 880, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "n_trigger", "target": "n_brain" },
+        { "id": "e2", "source": "n_brain", "target": "n_confirm" },
+        { "id": "e3", "source": "n_confirm", "target": "n_notify", "condition": "approved" },
+        { "id": "e4", "source": "n_notify", "target": "n_end" }
+      ]
+    },
+    "preview_graph_json": {
+      "nodes": [
+        {
+          "id": "n_trigger",
+          "type": "manual_trigger",
+          "label": "Start",
+          "config": { "input": "email intent and key points" },
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "n_brain",
+          "type": "main_brain",
+          "label": "Draft email",
+          "config": { "instruction": "Draft a professional email from the points." },
+          "position": { "x": 220, "y": 0 }
+        },
+        {
+          "id": "n_confirm",
+          "type": "ask_confirmation",
+          "label": "Review draft",
+          "config": { "prompt": "Does this draft look good?" },
+          "position": { "x": 440, "y": 0 }
+        },
+        {
+          "id": "n_notify",
+          "type": "notify_user",
+          "label": "Surface final draft",
+          "config": { "channel": "in_app" },
+          "position": { "x": 660, "y": 0 }
+        },
+        {
+          "id": "n_end",
+          "type": "end",
+          "label": "Done",
+          "position": { "x": 880, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "n_trigger", "target": "n_brain" },
+        { "id": "e2", "source": "n_brain", "target": "n_confirm" },
+        { "id": "e3", "source": "n_confirm", "target": "n_notify", "condition": "approved" },
+        { "id": "e4", "source": "n_notify", "target": "n_end" }
+      ]
+    },
+    "required_plugins": [],
+    "declared_permissions": ["Read the points you provide"],
+    "risk_level": "medium",
+    "skill_level": "beginner",
+    "visibility": "public",
+    "moderation_status": "approved",
+    "pricing_model": "free",
+    "version": "1.0.0",
+    "copied_count": 49,
+    "like_count": 31,
+    "bookmark_count": 17,
+    "rating_avg": 4.5,
+    "rating_count": 11,
+    "published_at": "2026-02-12T10:00:00.000Z",
+    "created_at": "2026-02-09T10:00:00.000Z",
+    "updated_at": "2026-02-12T10:00:00.000Z",
+    "is_demo": true
+  },
+  {
+    "id": "wf_weekly_productivity_review",
+    "owner_id": "prof_ada_makes",
+    "slug": "weekly-productivity-review",
+    "title": "Weekly Productivity Review",
+    "short_description": "Every week, gather your notes and reflect on what got done.",
+    "long_description": "Runs weekly: pulls your recent notes, waits briefly to let the day settle, then the main brain writes a short review of wins and next steps. The summary is saved and you get a notification.",
+    "category_id": "cat_productivity",
+    "tags": ["review", "productivity", "weekly", "reflection"],
+    "workflow_json": {
+      "nodes": [
+        {
+          "id": "n_trigger",
+          "type": "schedule_trigger",
+          "label": "Every Friday",
+          "config": { "cron": "0 17 * * 5" },
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "n_gather",
+          "type": "call_native_plugin",
+          "label": "Gather recent notes",
+          "config": { "plugin": "notes-summarizer", "action": "list_recent" },
+          "position": { "x": 220, "y": 0 }
+        },
+        {
+          "id": "n_wait",
+          "type": "wait",
+          "label": "Brief pause",
+          "config": { "seconds": 5 },
+          "position": { "x": 440, "y": 0 }
+        },
+        {
+          "id": "n_brain",
+          "type": "main_brain",
+          "label": "Write review",
+          "config": { "instruction": "Summarize the week's wins and next steps." },
+          "position": { "x": 660, "y": 0 }
+        },
+        {
+          "id": "n_save",
+          "type": "call_native_plugin",
+          "label": "Save review",
+          "config": { "plugin": "notes-summarizer", "action": "save_note" },
+          "position": { "x": 880, "y": 0 }
+        },
+        {
+          "id": "n_notify",
+          "type": "notify_user",
+          "label": "Notify ready",
+          "config": { "channel": "in_app" },
+          "position": { "x": 1100, "y": 0 }
+        },
+        {
+          "id": "n_end",
+          "type": "end",
+          "label": "Done",
+          "position": { "x": 1320, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "n_trigger", "target": "n_gather" },
+        { "id": "e2", "source": "n_gather", "target": "n_wait" },
+        { "id": "e3", "source": "n_wait", "target": "n_brain" },
+        { "id": "e4", "source": "n_brain", "target": "n_save" },
+        { "id": "e5", "source": "n_save", "target": "n_notify" },
+        { "id": "e6", "source": "n_notify", "target": "n_end" }
+      ]
+    },
+    "preview_graph_json": {
+      "nodes": [
+        {
+          "id": "n_trigger",
+          "type": "schedule_trigger",
+          "label": "Every Friday",
+          "config": { "cron": "0 17 * * 5" },
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "n_gather",
+          "type": "call_native_plugin",
+          "label": "Gather recent notes",
+          "config": { "plugin": "notes-summarizer", "action": "list_recent" },
+          "position": { "x": 220, "y": 0 }
+        },
+        {
+          "id": "n_wait",
+          "type": "wait",
+          "label": "Brief pause",
+          "config": { "seconds": 5 },
+          "position": { "x": 440, "y": 0 }
+        },
+        {
+          "id": "n_brain",
+          "type": "main_brain",
+          "label": "Write review",
+          "config": { "instruction": "Summarize the week's wins and next steps." },
+          "position": { "x": 660, "y": 0 }
+        },
+        {
+          "id": "n_save",
+          "type": "call_native_plugin",
+          "label": "Save review",
+          "config": { "plugin": "notes-summarizer", "action": "save_note" },
+          "position": { "x": 880, "y": 0 }
+        },
+        {
+          "id": "n_notify",
+          "type": "notify_user",
+          "label": "Notify ready",
+          "config": { "channel": "in_app" },
+          "position": { "x": 1100, "y": 0 }
+        },
+        {
+          "id": "n_end",
+          "type": "end",
+          "label": "Done",
+          "position": { "x": 1320, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "n_trigger", "target": "n_gather" },
+        { "id": "e2", "source": "n_gather", "target": "n_wait" },
+        { "id": "e3", "source": "n_wait", "target": "n_brain" },
+        { "id": "e4", "source": "n_brain", "target": "n_save" },
+        { "id": "e5", "source": "n_save", "target": "n_notify" },
+        { "id": "e6", "source": "n_notify", "target": "n_end" }
+      ]
+    },
+    "required_plugins": [
+      { "slug": "notes-summarizer", "name": "Notes Summarizer" }
+    ],
+    "declared_permissions": ["Read your recent notes", "Save notes on your behalf"],
+    "risk_level": "low",
+    "skill_level": "intermediate",
+    "visibility": "public",
+    "moderation_status": "approved",
+    "pricing_model": "free",
+    "version": "1.0.0",
+    "copied_count": 29,
+    "like_count": 18,
+    "bookmark_count": 9,
+    "rating_avg": 4.4,
+    "rating_count": 7,
+    "published_at": "2026-02-14T10:00:00.000Z",
+    "created_at": "2026-02-11T10:00:00.000Z",
+    "updated_at": "2026-02-14T10:00:00.000Z",
+    "is_demo": true
+  }
+]

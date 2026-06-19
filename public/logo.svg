@@ -1,0 +1,12 @@
+<svg width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Leda">
+  <defs>
+    <linearGradient id="leda-logo" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#2DD4BF"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="28" height="28" rx="9" fill="url(#leda-logo)" opacity="0.18"/>
+  <path d="M11 8v12a2 2 0 0 0 2 2h8" fill="none" stroke="url(#leda-logo)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="21" cy="22" r="2.5" fill="#2DD4BF"/>
+  <text x="40" y="22" font-family="Segoe UI, Inter, system-ui, sans-serif" font-size="18" font-weight="600" fill="#E7ECF6">Leda</text>
+</svg>

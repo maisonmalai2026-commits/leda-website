@@ -1,0 +1,68 @@
+[
+  {
+    "id": "rev_whatsapp_by_ada",
+    "user_id": "prof_ada_makes",
+    "target_type": "workflow",
+    "target_id": "wf_verified_whatsapp_message",
+    "rating": 5,
+    "body": "Love that it forces a confirmation before sending. The verify step caught a failed send for me in testing.",
+    "moderation_status": "visible",
+    "created_at": "2026-02-15T12:00:00.000Z",
+    "updated_at": "2026-02-15T12:00:00.000Z"
+  },
+  {
+    "id": "rev_class_reminder_by_ada",
+    "user_id": "prof_ada_makes",
+    "target_type": "workflow",
+    "target_id": "wf_tomorrows_class_reminder",
+    "rating": 5,
+    "body": "Simple and reliable. I get a clean reminder every evening without thinking about it.",
+    "moderation_status": "visible",
+    "created_at": "2026-02-16T09:30:00.000Z",
+    "updated_at": "2026-02-16T09:30:00.000Z"
+  },
+  {
+    "id": "rev_note_summarizer_by_leo",
+    "user_id": "prof_leo_studies",
+    "target_type": "workflow",
+    "target_id": "wf_note_summarizer",
+    "rating": 4,
+    "body": "Great for long lecture notes. Would love an option to keep bullet formatting.",
+    "moderation_status": "visible",
+    "created_at": "2026-02-17T15:45:00.000Z",
+    "updated_at": "2026-02-17T15:45:00.000Z"
+  },
+  {
+    "id": "rev_study_plan_by_rin",
+    "user_id": "prof_rin_flows",
+    "target_type": "workflow",
+    "target_id": "wf_study_plan_builder",
+    "rating": 5,
+    "body": "The tight-deadline branch is a nice touch. Built a realistic plan in seconds.",
+    "moderation_status": "visible",
+    "created_at": "2026-02-18T10:20:00.000Z",
+    "updated_at": "2026-02-18T10:20:00.000Z"
+  },
+  {
+    "id": "rev_workflow_builder_by_leo",
+    "user_id": "prof_leo_studies",
+    "target_type": "plugin",
+    "target_id": "plg_workflow_builder",
+    "rating": 5,
+    "body": "Clean canvas and the safe node types make it easy to trust what a workflow will do.",
+    "moderation_status": "visible",
+    "created_at": "2026-02-19T11:00:00.000Z",
+    "updated_at": "2026-02-19T11:00:00.000Z"
+  },
+  {
+    "id": "rev_whatsapp_agent_by_ada",
+    "user_id": "prof_ada_makes",
+    "target_type": "plugin",
+    "target_id": "plg_whatsapp_agent",
+    "rating": 4,
+    "body": "Works well paired with a confirmation node. Setup instructions could be a little clearer.",
+    "moderation_status": "visible",
+    "created_at": "2026-02-20T14:10:00.000Z",
+    "updated_at": "2026-02-20T14:10:00.000Z"
+  }
+]

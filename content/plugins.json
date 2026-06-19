@@ -1,0 +1,106 @@
+[
+  {
+    "slug": "main-brain-connector",
+    "name": "Main Brain Connector",
+    "category": "AI Brains",
+    "badge": "official",
+    "status": "available",
+    "description": "Lets you choose which AI model powers Leda and route chats to it.",
+    "permissions": [
+      "Uses the API key you provide for your chosen model.",
+      "Keeps your key private — it is never shown in public profiles.",
+      "Does not share your prompts with unrelated tools."
+    ]
+  },
+  {
+    "slug": "workflow-builder",
+    "name": "Workflow Builder",
+    "category": "Productivity",
+    "badge": "official",
+    "status": "available",
+    "description": "Turns a plain-language request into a reviewable workflow draft.",
+    "permissions": [
+      "Reads the request you type in.",
+      "Creates a workflow draft for you to review.",
+      "Does not run important actions without confirmation."
+    ]
+  },
+  {
+    "slug": "dify-connector",
+    "name": "Dify Connector",
+    "category": "Productivity",
+    "badge": "official",
+    "status": "in-development",
+    "description": "An optional connector for teams that already run their own Dify endpoint.",
+    "permissions": [
+      "Connects only to the endpoint you configure.",
+      "Sends requests you initiate from Leda.",
+      "Does not access unrelated accounts or files."
+    ]
+  },
+  {
+    "slug": "whatsapp-agent",
+    "name": "WhatsApp Agent",
+    "category": "Communication",
+    "badge": "experimental",
+    "status": "coming-soon",
+    "description": "Drafts messages for a contact you choose and asks before sending.",
+    "permissions": [
+      "Drafts a message for a contact you select.",
+      "Always requires confirmation before sending.",
+      "Experimental — not yet available for general use."
+    ]
+  },
+  {
+    "slug": "screenshot-agent",
+    "name": "Screenshot Agent",
+    "category": "Productivity",
+    "badge": "experimental",
+    "status": "in-development",
+    "description": "Reads a screenshot you share to help describe or act on what is on screen.",
+    "permissions": [
+      "Reads only the screenshot you choose to share.",
+      "Does not capture your screen on its own.",
+      "Experimental — accuracy is still being improved."
+    ]
+  },
+  {
+    "slug": "calendar-reminder-tool",
+    "name": "Calendar Reminder Tool",
+    "category": "Calendar",
+    "badge": "official",
+    "status": "coming-soon",
+    "description": "Reads selected calendar entries to help build reminders and prep.",
+    "permissions": [
+      "Reads calendar entries you connect.",
+      "Creates reminder drafts for review.",
+      "Does not delete or move events."
+    ]
+  },
+  {
+    "slug": "notes-summarizer",
+    "name": "Notes Summarizer",
+    "category": "Writing",
+    "badge": "official",
+    "status": "available",
+    "description": "Condenses long notes into key points and action items.",
+    "permissions": [
+      "Reads the text you provide.",
+      "Returns a summary you can keep or refine.",
+      "Does not store or upload your notes."
+    ]
+  },
+  {
+    "slug": "study-planner",
+    "name": "Study Planner",
+    "category": "Education",
+    "badge": "official",
+    "status": "available",
+    "description": "Builds a balanced study plan from your topics and deadline.",
+    "permissions": [
+      "Reads the topics and dates you type in.",
+      "Creates a plan draft you can edit.",
+      "Does not access unrelated files by default."
+    ]
+  }
+]

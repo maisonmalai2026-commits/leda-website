@@ -1,0 +1,58 @@
+[
+  {
+    "id": "prof_leda_official",
+    "handle": "leda_official",
+    "display_name": "Leda",
+    "bio": "Official Leda workflows and plugins. Demo content for the marketplace preview.",
+    "avatar_url": null,
+    "website_url": "https://leda.app",
+    "profile_visibility": "public",
+    "role": "admin",
+    "creator_status": "active",
+    "is_verified_creator": true,
+    "created_at": "2026-01-05T09:00:00.000Z",
+    "updated_at": "2026-01-05T09:00:00.000Z"
+  },
+  {
+    "id": "prof_ada_makes",
+    "handle": "ada_makes",
+    "display_name": "Ada Makes",
+    "bio": "Builds practical productivity flows. Demo creator.",
+    "avatar_url": null,
+    "website_url": null,
+    "profile_visibility": "public",
+    "role": "creator",
+    "creator_status": "active",
+    "is_verified_creator": false,
+    "created_at": "2026-01-12T14:30:00.000Z",
+    "updated_at": "2026-01-12T14:30:00.000Z"
+  },
+  {
+    "id": "prof_rin_flows",
+    "handle": "rin_flows",
+    "display_name": "Rin Flows",
+    "bio": "Messaging and communication automations. Demo creator.",
+    "avatar_url": null,
+    "website_url": null,
+    "profile_visibility": "public",
+    "role": "creator",
+    "creator_status": "active",
+    "is_verified_creator": false,
+    "created_at": "2026-01-18T11:15:00.000Z",
+    "updated_at": "2026-01-18T11:15:00.000Z"
+  },
+  {
+    "id": "prof_leo_studies",
+    "handle": "leo_studies",
+    "display_name": "Leo Studies",
+    "bio": "Study planners and class reminders for learners. Demo creator.",
+    "avatar_url": null,
+    "website_url": null,
+    "profile_visibility": "public",
+    "role": "creator",
+    "creator_status": "active",
+    "is_verified_creator": false,
+    "created_at": "2026-01-22T16:45:00.000Z",
+    "updated_at": "2026-01-22T16:45:00.000Z"
+  }
+]

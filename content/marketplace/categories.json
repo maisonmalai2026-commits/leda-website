@@ -1,0 +1,101 @@
+[
+  {
+    "id": "cat_productivity",
+    "name": "Productivity",
+    "slug": "productivity",
+    "description": "Get more done with automations that organize, summarize, and follow up.",
+    "type": "both",
+    "sort_order": 1,
+    "active": true
+  },
+  {
+    "id": "cat_communication",
+    "name": "Communication",
+    "slug": "communication",
+    "description": "Draft, send, and verify messages across your apps.",
+    "type": "both",
+    "sort_order": 2,
+    "active": true
+  },
+  {
+    "id": "cat_education",
+    "name": "Education",
+    "slug": "education",
+    "description": "Study plans, class reminders, and learning helpers.",
+    "type": "both",
+    "sort_order": 3,
+    "active": true
+  },
+  {
+    "id": "cat_writing",
+    "name": "Writing",
+    "slug": "writing",
+    "description": "Drafting, summarizing, and editing assistance.",
+    "type": "both",
+    "sort_order": 4,
+    "active": true
+  },
+  {
+    "id": "cat_files",
+    "name": "Files",
+    "slug": "files",
+    "description": "Work with documents, notes, and attachments.",
+    "type": "both",
+    "sort_order": 5,
+    "active": true
+  },
+  {
+    "id": "cat_calendar",
+    "name": "Calendar",
+    "slug": "calendar",
+    "description": "Schedule-aware reminders and planning flows.",
+    "type": "both",
+    "sort_order": 6,
+    "active": true
+  },
+  {
+    "id": "cat_browser",
+    "name": "Browser",
+    "slug": "browser",
+    "description": "Capture, read, and act on what's in your browser.",
+    "type": "both",
+    "sort_order": 7,
+    "active": true
+  },
+  {
+    "id": "cat_ai_brains",
+    "name": "AI Brains",
+    "slug": "ai-brains",
+    "description": "Reasoning engines that power your workflows.",
+    "type": "plugin",
+    "sort_order": 8,
+    "active": true
+  },
+  {
+    "id": "cat_images",
+    "name": "Images",
+    "slug": "images",
+    "description": "Screenshots, visuals, and image understanding.",
+    "type": "both",
+    "sort_order": 9,
+    "active": true
+  },
+  {
+    "id": "cat_developer_tools",
+    "name": "Developer Tools",
+    "slug": "developer-tools",
+    "description": "Connectors and utilities for builders.",
+    "type": "plugin",
+    "sort_order": 10,
+    "active": true
+  },
+  {
+    "id": "cat_experimental",
+    "name": "Experimental",
+    "slug": "experimental",
+    "description": "Early-stage flows and plugins, clearly labeled.",
+    "type": "both",
+    "sort_order": 11,
+    "active": true
+  }
+]

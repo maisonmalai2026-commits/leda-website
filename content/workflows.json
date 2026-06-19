@@ -1,0 +1,128 @@
+[
+  {
+    "slug": "tomorrows-class-reminder",
+    "title": "Tomorrow's Class Reminder",
+    "summary": "Check tomorrow's classes and prepare a short reminder with what to bring and read.",
+    "category": "Education",
+    "status": "available",
+    "risk": "low",
+    "tools": ["Workflow Builder", "Calendar Reminder Tool"],
+    "trigger": "Runs each evening, or when you ask Leda to prepare for tomorrow.",
+    "steps": [
+      "Read tomorrow's class schedule from your connected calendar.",
+      "Group classes and note any materials or readings you saved.",
+      "Draft a short reminder summary for the morning.",
+      "Show the draft so you can review before it is saved or sent."
+    ],
+    "permissions": [
+      "Read selected calendar entries you connect.",
+      "Create a workflow draft you can review.",
+      "Does not send anything without your confirmation."
+    ]
+  },
+  {
+    "slug": "study-plan-builder",
+    "title": "Study Plan Builder",
+    "summary": "Turn a list of topics and a deadline into a realistic, reviewable study plan.",
+    "category": "Education",
+    "status": "available",
+    "risk": "low",
+    "tools": ["Workflow Builder", "Study Planner"],
+    "trigger": "Runs when you describe what you need to study and by when.",
+    "steps": [
+      "Collect the topics and target date you provide.",
+      "Break topics into sessions across the available days.",
+      "Balance harder topics earlier and add review sessions.",
+      "Present the plan for you to adjust before saving."
+    ],
+    "permissions": [
+      "Read the topics and dates you type in.",
+      "Create a workflow draft you can edit.",
+      "Does not access unrelated files by default."
+    ]
+  },
+  {
+    "slug": "note-summarizer",
+    "title": "Note Summarizer",
+    "summary": "Condense long notes into clear key points and action items.",
+    "category": "Productivity",
+    "status": "available",
+    "risk": "low",
+    "tools": ["Notes Summarizer"],
+    "trigger": "Runs when you paste or select notes and ask for a summary.",
+    "steps": [
+      "Read the notes text you provide.",
+      "Identify key points, decisions, and action items.",
+      "Produce a short structured summary.",
+      "Show the result for you to keep or refine."
+    ],
+    "permissions": [
+      "Read selected text input only.",
+      "Returns a summary you can review.",
+      "Does not store or upload your notes."
+    ]
+  },
+  {
+    "slug": "email-draft-helper",
+    "title": "Email Draft Helper",
+    "summary": "Draft a clearer, friendlier email from a few bullet points.",
+    "category": "Writing",
+    "status": "available",
+    "risk": "low",
+    "tools": ["Workflow Builder"],
+    "trigger": "Runs when you describe the email you want to write.",
+    "steps": [
+      "Read the points and tone you describe.",
+      "Draft a structured email with subject and body.",
+      "Offer a couple of tone variations.",
+      "Show the draft — sending stays in your hands."
+    ],
+    "permissions": [
+      "Read the text you provide.",
+      "Create a draft for review.",
+      "Never sends email on its own."
+    ]
+  },
+  {
+    "slug": "verified-whatsapp-message",
+    "title": "Verified WhatsApp Message",
+    "summary": "Prepare a message for a contact and confirm before anything is sent.",
+    "category": "Communication",
+    "status": "coming-soon",
+    "risk": "high",
+    "tools": ["WhatsApp Agent", "Workflow Builder"],
+    "trigger": "Runs when you ask Leda to prepare a message for a chosen contact.",
+    "steps": [
+      "Read the recipient and message intent you provide.",
+      "Draft the message text for that contact.",
+      "Show a clear confirmation step with the final text.",
+      "Send only after you explicitly approve."
+    ],
+    "permissions": [
+      "Draft a message for a contact you choose.",
+      "Requires explicit confirmation before sending.",
+      "Experimental — under active development and not yet available."
+    ]
+  },
+  {
+    "slug": "weekly-productivity-review",
+    "title": "Weekly Productivity Review",
+    "summary": "Pull together the week's tasks and notes into a short review.",
+    "category": "Productivity",
+    "status": "coming-soon",
+    "risk": "medium",
+    "tools": ["Workflow Builder", "Notes Summarizer", "Calendar Reminder Tool"],
+    "trigger": "Runs weekly, or when you ask for a recap of the week.",
+    "steps": [
+      "Gather tasks and notes from the tools you connect.",
+      "Summarize what was completed and what is pending.",
+      "Highlight a few suggested priorities for next week.",
+      "Present the review for you to edit and keep."
+    ],
+    "permissions": [
+      "Read entries from tools you explicitly connect.",
+      "Create a review draft you can edit.",
+      "Does not change or delete any data."
+    ]
+  }
+]

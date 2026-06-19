@@ -1,0 +1,46 @@
+[
+  {
+    "version": "v0.4.0",
+    "date": "2026-06-18",
+    "title": "Public website launch",
+    "status": "current",
+    "notes": [
+      "Launched the public Leda website with product, workflows, plugins, and vision pages.",
+      "Added a waitlist form and an honest status system: Available now, In development, Coming soon, Experimental.",
+      "Documented the privacy-by-default approach and what Leda intentionally does not do."
+    ]
+  },
+  {
+    "version": "v0.3.0",
+    "date": "2026-05-02",
+    "title": "Workflow builder foundation",
+    "status": "released",
+    "notes": [
+      "Introduced the first version of natural-language workflow drafts.",
+      "Added a read-only review step so you can see a workflow before saving it.",
+      "Early native tools for notes and study planning."
+    ]
+  },
+  {
+    "version": "v0.2.0",
+    "date": "2026-03-19",
+    "title": "Brain profiles and main chat routing",
+    "status": "released",
+    "notes": [
+      "Added brain profiles so you can choose which AI model answers.",
+      "Main chat can route requests to your selected brain.",
+      "Local-first workspace settings."
+    ]
+  },
+  {
+    "version": "v0.1.0",
+    "date": "2026-02-10",
+    "title": "Initial Leda desktop prototype",
+    "status": "released",
+    "notes": [
+      "First desktop prototype with a single chat interface.",
+      "Early groundwork for a private, local workspace.",
+      "Internal testing build for Windows."
+    ]
+  }
+]
