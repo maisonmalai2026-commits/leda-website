@@ -1,12 +1,22 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Check, ChevronDown, Info, Loader2, UserRound } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  Info,
+  Loader2,
+  LogOut,
+  UserRound,
+} from "lucide-react";
 
 import type { MarketplaceFlags } from "@/lib/marketplace/config";
 import type { Role, SessionUser, UserRole } from "@/lib/marketplace/types";
+import { signOut } from "@/lib/marketplace/auth-actions";
 import { useToast } from "@/components/marketplace/ui/Toast";
+import { ButtonLink } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 
 interface RoleOption {
@@ -39,6 +49,35 @@ export function AccountMenu({
   sessionUser: SessionUser | null;
   flags: MarketplaceFlags;
 }) {
+  // DEMO MODE — unchanged behavior: the local demo-role switcher. When Supabase
+  // is configured (flags.demoMode === false) we switch to real-auth UI below.
+  if (flags.demoMode) {
+    return <DemoRoleSwitcher sessionUser={sessionUser} />;
+  }
+
+  // REAL AUTH — no signed-in user: offer log in / sign up.
+  if (!sessionUser) {
+    return (
+      <div className="flex items-center gap-2">
+        <ButtonLink href="/login" variant="ghost" size="md" className="h-9 px-3">
+          Log in
+        </ButtonLink>
+        <ButtonLink href="/signup" variant="primary" size="md" className="h-9 px-3.5">
+          Sign up
+        </ButtonLink>
+      </div>
+    );
+  }
+
+  // REAL AUTH — signed in: account dropdown.
+  return <RealAccountMenu sessionUser={sessionUser} />;
+}
+
+// ---------------------------------------------------------------------------
+// Demo role switcher (PRESERVED — original behavior, unchanged).
+// ---------------------------------------------------------------------------
+
+function DemoRoleSwitcher({ sessionUser }: { sessionUser: SessionUser | null }) {
   const router = useRouter();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
@@ -235,6 +274,176 @@ export function AccountMenu({
                 </button>
               );
             })}
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Real-auth account dropdown (Supabase mode, signed in).
+// ---------------------------------------------------------------------------
+
+function RealAccountMenu({ sessionUser }: { sessionUser: SessionUser }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const menuId = useId();
+
+  const displayName = sessionUser.profile.display_name;
+  const handle = sessionUser.profile.handle;
+  const role: Role = sessionUser.role;
+
+  // Close on outside click.
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(event: MouseEvent) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onPointerDown);
+    return () => document.removeEventListener("mousedown", onPointerDown);
+  }, [open]);
+
+  // Close on Escape and return focus to the trigger.
+  useEffect(() => {
+    if (!open) return;
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+        buttonRef.current?.focus();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
+  const handleSignOut = useCallback(async () => {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      await signOut();
+    } finally {
+      setOpen(false);
+      router.push("/");
+      router.refresh();
+      setSigningOut(false);
+    }
+  }, [router, signingOut]);
+
+  return (
+    <div ref={containerRef} className="relative">
+      <button
+        ref={buttonRef}
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-controls={open ? menuId : undefined}
+        className={cn(
+          "inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.04] px-2.5 py-1.5 text-left text-sm transition-all",
+          "hover:bg-white/[0.08] hover:border-accent-cyan/30 hover:shadow-[0_0_22px_-10px_rgba(56,189,248,0.7)]",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70 focus-visible:ring-offset-2 focus-visible:ring-offset-base",
+        )}
+      >
+        <span
+          aria-hidden
+          className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent-blue via-accent-cyan to-accent-teal text-[11px] font-semibold text-base shadow-[0_0_14px_-4px_rgba(34,211,238,0.6)]"
+        >
+          {initials(displayName)}
+        </span>
+        <span className="hidden min-w-0 flex-col leading-tight sm:flex">
+          <span className="truncate text-[13px] font-medium text-ink">
+            {displayName}
+          </span>
+          <span className="truncate text-[11px] text-ink-faint">
+            @{handle}
+          </span>
+        </span>
+        <span className="hidden rounded-md border border-accent-cyan/20 bg-accent-cyan/[0.06] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-accent-cyan md:inline">
+          {ROLE_LABELS[role]}
+        </span>
+        <ChevronDown
+          className={cn(
+            "h-4 w-4 shrink-0 text-ink-faint transition-transform",
+            open && "rotate-180",
+          )}
+          aria-hidden
+        />
+      </button>
+
+      {open ? (
+        <div
+          id={menuId}
+          role="menu"
+          aria-label="Account"
+          className="absolute right-0 z-50 mt-2 w-60 origin-top-right overflow-hidden rounded-2xl border border-white/[0.10] bg-surface-raised/95 p-1.5 shadow-card backdrop-blur-xl animate-fade-up before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent"
+        >
+          <div className="px-2.5 pb-2 pt-2">
+            <p className="truncate text-[13px] font-medium text-ink">
+              {displayName}
+            </p>
+            <p className="truncate text-[11px] text-ink-faint">@{handle}</p>
+          </div>
+
+          <div className="border-t border-white/[0.06] pt-1">
+            <Link
+              href="/account"
+              role="menuitem"
+              onClick={() => setOpen(false)}
+              className={cn(
+                "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[13px] font-medium text-ink-muted transition-colors",
+                "hover:bg-white/[0.05] hover:text-ink",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70",
+              )}
+            >
+              <UserRound className="h-4 w-4 shrink-0" aria-hidden />
+              Account
+            </Link>
+            <Link
+              href={`/u/${handle}`}
+              role="menuitem"
+              onClick={() => setOpen(false)}
+              className={cn(
+                "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[13px] font-medium text-ink-muted transition-colors",
+                "hover:bg-white/[0.05] hover:text-ink",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70",
+              )}
+            >
+              <UserRound className="h-4 w-4 shrink-0" aria-hidden />
+              Public profile
+            </Link>
+
+            <div className="mt-1 border-t border-white/[0.06] pt-1">
+              <button
+                type="button"
+                role="menuitem"
+                onClick={handleSignOut}
+                disabled={signingOut}
+                className={cn(
+                  "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[13px] font-medium text-ink-muted transition-colors",
+                  "hover:bg-white/[0.05] hover:text-ink",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-sky/70",
+                  "disabled:cursor-not-allowed disabled:opacity-60",
+                )}
+              >
+                {signingOut ? (
+                  <Loader2 className="h-4 w-4 shrink-0 animate-spin" aria-hidden />
+                ) : (
+                  <LogOut className="h-4 w-4 shrink-0" aria-hidden />
+                )}
+                Sign out
+              </button>
+            </div>
           </div>
         </div>
       ) : null}

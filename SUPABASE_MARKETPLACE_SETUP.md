@@ -158,6 +158,128 @@ not create profiles by hand.
 
 ---
 
+## Enabling real accounts (Email + Google sign-in)
+
+This is the end-to-end checklist that turns the app's **demo identity** into
+**real accounts**: email/password sign-up + sign-in and "Continue with Google".
+It powers the `/login`, `/signup`, `/account`, and `/u/[handle]` pages.
+
+> **Demo-mode fallback.** When `NEXT_PUBLIC_SUPABASE_URL` and
+> `NEXT_PUBLIC_SUPABASE_ANON_KEY` are **absent**, the app stays in demo mode:
+> the auth actions return a friendly *"Connect Supabase to enable real
+> accounts."* message instead of crashing, and the demo-identity switcher is
+> used instead. Everything below is what makes real login work — none of it is
+> required just to run or demo the site. **Secrets stay server-only:** the
+> `service_role` key and any provider secret are read only inside
+> `import "server-only";` modules and are never shipped to the browser.
+
+### (a) Create the project and set the three env vars
+
+If you have not already done so in sections **1–3** above:
+
+1. Create the free Supabase project (section 1).
+2. From **Project Settings → API**, copy these into `.env.local`:
+
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT-ref.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...your-anon-key...
+   SUPABASE_SERVICE_ROLE_KEY=eyJhbGci...your-service-role-key...   # server-only
+   ```
+
+   The first two are `NEXT_PUBLIC_*` (browser-safe, RLS-protected). The
+   `service_role` key **bypasses RLS** and must never reach the browser.
+
+### (b) Run the migrations (creates `profiles` + the auto-profile trigger)
+
+Follow section **4** to run `supabase/migrations/0001 → 0004` in order. The
+important pieces for accounts are:
+
+- `0001_init.sql` creates the **`profiles`** table.
+- `0004_functions_triggers.sql` installs the **`handle_new_user`** function and
+  its **`on_auth_user_created`** trigger on `auth.users`. This is what
+  **auto-creates a `profiles` row on every signup**, deriving a unique `handle`
+  from the email local-part. You never create profiles by hand — sign in with
+  email or Google and the row appears automatically.
+
+### (c) Enable the Email and Google providers
+
+In the dashboard, open **Authentication → Providers**:
+
+1. **Email** — make sure it is **enabled**.
+   - **Confirm email ON** (recommended for production): new users must click a
+     link in their inbox before they can sign in. The app sends them to
+     `<NEXT_PUBLIC_APP_URL>/auth/callback` after confirming.
+   - **Confirm email OFF** (handy for local testing): signups work immediately
+     with no inbox round-trip. Turn it back on before going live.
+2. **Google** — toggle it **on**. You will paste the Client ID and Secret from
+   step (d). Leave this tab open.
+
+### (d) Create the Google OAuth client
+
+In the [Google Cloud Console](https://console.cloud.google.com/):
+
+1. Pick (or create) a project, then open **APIs & Services → Credentials**.
+2. If prompted, configure the **OAuth consent screen** first (External user
+   type; add an app name, support email, and your email as a test user).
+3. Click **Create credentials → OAuth client ID** and choose
+   **Application type: Web application**.
+4. Under **Authorized redirect URIs**, add **exactly** this Supabase callback
+   (this is Supabase's URL, *not* your app's):
+
+   ```text
+   https://<PROJECT-REF>.supabase.co/auth/v1/callback
+   ```
+
+   Replace `<PROJECT-REF>` with your project ref (the subdomain of your
+   `NEXT_PUBLIC_SUPABASE_URL`).
+5. Click **Create**, then copy the generated **Client ID** and **Client
+   secret**.
+6. Back in Supabase (**Authentication → Providers → Google** from step (c)),
+   paste the **Client ID** and **Client secret** and **Save**.
+
+### (e) Set Site URL and redirect URLs in Supabase
+
+Open **Authentication → URL Configuration**:
+
+1. **Site URL** — set to your app's base URL:
+   - Local: `http://localhost:3000`
+   - Production: your deployed URL (e.g. `https://your-app.vercel.app`)
+2. **Redirect URLs** — add your app's callback for each environment so Supabase
+   will redirect back after email confirmation and Google sign-in:
+
+   ```text
+   http://localhost:3000/auth/callback
+   https://your-app.vercel.app/auth/callback
+   ```
+
+   The app always asks Supabase to redirect to
+   `<NEXT_PUBLIC_APP_URL>/auth/callback` (the existing route at
+   `app/auth/callback/route.ts` exchanges the OAuth code for a session). Make
+   sure `NEXT_PUBLIC_APP_URL` in `.env.local` matches the Site URL above.
+
+### (f) Restart the app
+
+Stop and restart the dev server (`npm run dev`) so Next.js picks up the new
+env vars. Now:
+
+- **`/signup`** — email/password sign-up (sends a confirmation email if
+  confirmation is on) and **Continue with Google**.
+- **`/login`** — email/password sign-in and **Continue with Google**.
+- **`/account`** — edit your profile (display name, handle, bio, website,
+  avatar) and sign out.
+- **`/u/[handle]`** — your public profile page.
+
+The demo-identity switcher disappears the moment real auth is configured; the
+session is the real Supabase one.
+
+> **Troubleshooting Google:** a *redirect_uri_mismatch* error means the
+> **Authorized redirect URI** in Google Cloud does not exactly match
+> `https://<PROJECT-REF>.supabase.co/auth/v1/callback`. A successful Google
+> login that then lands on an error usually means your app URL is missing from
+> Supabase's **Redirect URLs** (step e).
+
+---
+
 ## 6. Storage buckets (avatars + screenshots, metadata only)
 
 The database stores **only URLs** (`avatar_url`, `icon_url`, `screenshots[]`),

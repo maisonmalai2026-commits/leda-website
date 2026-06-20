@@ -249,6 +249,27 @@ configured.
 | `/moderation` · `/admin` | Human moderation queue + admin dashboard (gated) |
 | `/marketplace/policies` · `/creator-guidelines` · `/plugin-safety` · `/report` | Policy & safety pages |
 
+## Accounts & profiles
+
+Real user accounts are supported and **demo-mode-safe**. With Supabase
+configured you get email/password **and** Google ("Continue with Google")
+sign-in; with no Supabase env set, the auth pages stay up and the actions return
+a friendly *"Connect Supabase to enable real accounts."* message instead of
+crashing.
+
+| Route | Page |
+| --- | --- |
+| `/signup` | Create an account — email/password or Google |
+| `/login` | Sign in — email/password or Google |
+| `/account` | Edit your profile (display name, handle, bio, website, avatar) + sign out |
+| `/u/[handle]` | Public profile page |
+
+A `profiles` row is **auto-created on signup** by a database trigger (the handle
+is derived from the email). To turn on real accounts and Google sign-in, follow
+**"Enabling real accounts (Email + Google sign-in)"** in
+[`SUPABASE_MARKETPLACE_SETUP.md`](SUPABASE_MARKETPLACE_SETUP.md). All secrets
+(service-role key, provider secret) stay server-only.
+
 ## New environment variables
 
 All optional — leave empty for demo mode. See [`.env.example`](.env.example).

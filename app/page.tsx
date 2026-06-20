@@ -30,6 +30,7 @@ import { Reveal, Stagger, StaggerItem } from "@/components/fx/motion";
 import { SpotlightCard } from "@/components/fx/SpotlightCard";
 import { Magnetic } from "@/components/fx/Magnetic";
 import { Marquee } from "@/components/fx/Marquee";
+import { OperatingLayerSection } from "@/components/home/OperatingLayerSection";
 
 const brains = [
   "Gemini 2.5 Flash",
@@ -117,6 +118,9 @@ export default function HomePage() {
           <ChatMockup />
         </Reveal>
       </Section>
+
+      {/* OPERATING LAYER — cartoon body explainer + vision + roadmap */}
+      <OperatingLayerSection />
 
       {/* HOW LEDA WORKS */}
       <Section className="pt-4">

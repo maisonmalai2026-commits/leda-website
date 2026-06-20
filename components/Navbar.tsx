@@ -62,7 +62,13 @@ export function Navbar() {
           })}
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-1.5 md:flex">
+          <Link
+            href="/login"
+            className="rounded-lg px-3 py-2 text-sm text-ink-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/70"
+          >
+            Log in
+          </Link>
           <ButtonLink href="/contact" size="md">
             Join Waitlist
           </ButtonLink>
@@ -104,6 +110,13 @@ export function Navbar() {
                   {item.label}
                 </Link>
               ))}
+              <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className="block rounded-xl px-3 py-2.5 text-sm text-ink-muted transition-colors hover:bg-white/[0.04] hover:text-ink"
+              >
+                Log in
+              </Link>
               <ButtonLink href="/contact" size="md" className="mt-2 w-full">
                 Join Waitlist
               </ButtonLink>
